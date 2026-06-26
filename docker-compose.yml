@@ -1,14 +1,40 @@
 version: "3.9"
 
 services:
+  db:
+    image: mysql:8.0
+    container_name: captcha-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      # 팀원별 격리된 데이터 볼륨 — git에서 공유되지 않음
+      - captcha_mysql_data:/var/lib/mysql
+      # 스키마·시드 SQL: 볼륨이 비어 있을 때 알파벳순으로 1회 자동 실행
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile.dev
     container_name: captcha-backend
+    env_file: .env
     ports:
       - "8000:8000"
     depends_on:
-      - database
+      db:
+        condition: service_healthy
     restart: always
 
   ai:
@@ -29,19 +55,7 @@ services:
       - backend
     restart: always
 
-  database:
-    image: mysql:8.0
-    container_name: captcha-db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: captcha
-      MYSQL_USER: captcha
-      MYSQL_PASSWORD: 1234
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-
 volumes:
-  mysql_data:
+  captcha_mysql_data:
+    # name을 고정해 docker compose down 후 재기동 시 동일 볼륨 재사용
+    name: captcha_mysql_data
