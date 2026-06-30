@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './styles/main.css';
+import homeIcon from './assets/home.png';
 
 // Layout components
 import Nav from './components/Nav';
@@ -36,8 +37,16 @@ const PAGE_TITLES = {
   'plan-pay': '요금제 결제',
 };
 
+function HomeButton({ onClick }) {
+  return (
+    <button className="po-back po-home" onClick={onClick} aria-label="홈으로" title="홈으로">
+      <img src={homeIcon} alt="" />
+    </button>
+  );
+}
+
 // Page overlay wrapper
-function PageOverlay({ id, activePage, title, onBack, backLabel = '← 홈으로', extra, children }) {
+function PageOverlay({ id, activePage, title, onBack, extra, children }) {
   const isActive = activePage === id;
 
   useEffect(() => {
@@ -47,7 +56,7 @@ function PageOverlay({ id, activePage, title, onBack, backLabel = '← 홈으로
   return (
     <div className={`page-overlay${isActive ? ' active' : ''}`}>
       <div className="po-nav">
-        <button className="po-back" onClick={onBack}>{backLabel}</button>
+        <HomeButton onClick={onBack} />
         <span className="po-title" dangerouslySetInnerHTML={{ __html: 'AI<b style="color:var(--orange)">CAPTCHA</b>' }}/>
         {extra}
       </div>
@@ -116,7 +125,7 @@ export default function App() {
       {/* Mypage */}
       <div className={`page-overlay${page === 'mypage' ? ' active' : ''}`}>
         <div className="po-nav">
-          <button className="po-back" onClick={closePage}>← 홈으로</button>
+          <HomeButton onClick={closePage} />
           <span className="po-title">마이페이지</span>
           <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
             <span style={{ fontSize: 14, color: 'var(--ink-soft)', display: 'flex', alignItems: 'center' }}>홍길동님</span>
@@ -141,7 +150,7 @@ export default function App() {
       {/* Board */}
       <div className={`page-overlay${page === 'board' ? ' active' : ''}`}>
         <div className="po-nav">
-          <button className="po-back" onClick={closePage}>← 홈으로</button>
+          <HomeButton onClick={closePage} />
           <span className="po-title">공지사항 / FAQ / CAPTCHA 연구</span>
         </div>
         <BoardPage />
@@ -150,7 +159,7 @@ export default function App() {
       {/* Enterprise Inquiry */}
       <div className={`page-overlay${page === 'enterprise' ? ' active' : ''}`}>
         <div className="po-nav">
-          <button className="po-back" onClick={closePage}>← 요금제로</button>
+          <HomeButton onClick={closePage} />
           <span className="po-title" dangerouslySetInnerHTML={{ __html: 'AI<b style="color:var(--orange)">CAPTCHA</b> · Enterprise 도입 문의' }}/>
         </div>
         <EnterprisePage closePage={closePage} />
@@ -159,7 +168,7 @@ export default function App() {
       {/* Plan Payment */}
       <div className={`page-overlay${page === 'plan-pay' ? ' active' : ''}`}>
         <div className="po-nav">
-          <button className="po-back" onClick={closePage}>← 요금제로</button>
+          <HomeButton onClick={closePage} />
           <span className="po-title" dangerouslySetInnerHTML={{ __html: 'AI<b style="color:var(--orange)">CAPTCHA</b> · 요금제 결제' }}/>
           <div style={{ marginLeft: 'auto' }}>
             <span style={{ fontSize: 11, background: 'var(--peach)', color: 'var(--orange-2)', padding: '4px 10px', borderRadius: 999, fontWeight: 600 }}>TEST MODE · 실제 결제 없음</span>
