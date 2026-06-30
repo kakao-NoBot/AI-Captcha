@@ -1,3 +1,5 @@
+/* main.css */
+
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
@@ -77,40 +79,74 @@ header {
 
 /* HERO */
 .hero { position: relative; overflow: hidden; }
-.hero::before {
-  content: ""; position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(560px 380px at 88% 4%, rgba(244,166,42,.20), transparent 60%),
-    radial-gradient(640px 520px at 102% 60%, rgba(240,105,30,.16), transparent 62%);
+.hero::before{
+    background:
+      radial-gradient(520px 340px at 78% 8%, rgba(244,166,42,.18), transparent 60%),
+      radial-gradient(560px 460px at 90% 55%, rgba(240,105,30,.14), transparent 62%);
 }
-.hero-grid {
-  position: relative; z-index: 1; display: grid;
-  grid-template-columns: 1.02fr .98fr; gap: 56px; align-items: center;
-  padding: 74px 0 86px;
+.hero-grid{
+    position:relative;
+    z-index:1;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:80px 0 70px;
 }
-h1 {
-  font-size: clamp(38px,5vw,60px); line-height: 1.04; margin: 18px 0 0;
-  font-weight: 700; letter-spacing: -.035em;
+h1{
+    font-size:clamp(46px,5vw,66px);
+    text-align:center;
+    line-height:1.08;
+    margin:22px auto 0;
 }
 h1 .hl { position: relative; color: var(--orange); white-space: nowrap; }
 h1 .hl::after {
   content: ""; position: absolute; left: -2px; right: -2px; bottom: .08em; height: .30em;
   background: var(--gold); opacity: .30; z-index: -1; border-radius: 3px;
 }
-.lead { margin: 22px 0 0; font-size: 18px; color: var(--ink-soft); max-width: 30em; }
-.hero-cta { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+.lead{
+    margin:26px auto 0;
+    max-width:620px;
+    text-align:center;
+    line-height:1.8;
+}
+.hero-cta{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    margin-top:42px;
+}
 .btn-lg { padding: 15px 26px; font-size: 16px; border-radius: 14px; }
 .btn-outline { background: #fff; color: var(--ink); border: 1.5px solid var(--line); }
 .btn-outline:hover { border-color: var(--orange); color: var(--orange-2); }
-.hero-meta { display: flex; gap: 26px; margin-top: 34px; flex-wrap: wrap; }
+.hero-meta{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-top:24px;
+    flex-wrap:wrap;
+}
+.hero-content{
+    max-width:760px;
+    margin:0 auto;
+    text-align:center;
+}
 .hero-meta div { display: flex; flex-direction: column; }
 .hero-meta .n { font-family: var(--disp); font-weight: 700; font-size: 24px; letter-spacing: -.02em; }
 .hero-meta .l { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
 /* CAPTCHA DEMO */
 .demo {
-  background: var(--card); border: 1px solid var(--line); border-radius: 24px;
-  box-shadow: var(--shadow-md); overflow: hidden;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
 }
 .demo-top {
   display: flex; align-items: center; gap: 10px; padding: 13px 18px;
@@ -136,7 +172,7 @@ h1 .hl::after {
 }
 .tiles { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 16px; }
 .tile {
-  position: relative; aspect-ratio: 1; border: 1.5px solid var(--line); border-radius: 14px;
+  position: relative; aspect-ratio: 0.82; border: 1.5px solid var(--line); border-radius: 14px;
   background: #fff; cursor: grab; display: flex; flex-direction: column; align-items: center;
   justify-content: center; gap: 4px; touch-action: none; user-select: none; transition: .16s;
   padding: 6px;
@@ -280,7 +316,7 @@ footer { padding: 54px 0 40px; border-top: 1px solid var(--line); background: va
 
 /* RESPONSIVE */
 @media (max-width: 940px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; padding: 48px 0 60px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; padding:120px 0 130px; }
   .compare, .metrics, .flow { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .menu-toggle { display: inline-flex; }

@@ -5,46 +5,55 @@ const FAQ_TREE = [
     q: 'API Key 발급은 어떻게 하나요?',
     a: '이용 신청 페이지에서 요금제를 선택 후 신청하면 즉시 발급됩니다. 마이페이지 > API Key 관리에서도 확인할 수 있어요.',
     follow: ['요금제 종류가 궁금해요', '마이페이지는 어디 있나요?'],
+    keywords: ['api key', 'apikey', '키 발급', '발급', '키 신청', '신청'],
   },
   {
     q: '봇 차단율이 얼마나 되나요?',
     a: '현재 목표 지표는 봇 차단율 99.2%, 분류 정확도 98.6%입니다. 드래그 궤적 검증으로 스크립트 봇도 탐지합니다.',
     follow: ['CAPTCHA 유형은 몇 가지인가요?', '검증 속도가 궁금해요'],
+    keywords: ['차단율', '봇 차단', '정확도', '탐지율', '차단'],
   },
   {
     q: 'CAPTCHA 유형은 몇 가지인가요?',
     a: '현재 두 가지 유형이 있습니다.\n• 유형 1 — 4지선다 클릭\n• 유형 2 — 드래그-투-타깃\n유형 2 실패 시 유형 1로 자동 폴백됩니다.',
     follow: ['API Key 발급은 어떻게 하나요?', '요금제 종류가 궁금해요'],
+    keywords: ['유형', '캡차 종류', 'captcha 유형', '종류', '타입'],
   },
   {
     q: '요금제 종류가 궁금해요',
     a: '세 가지 요금제가 있습니다.\n• Basic — 무료 (월 10만 호출)\n• Pro — ₩89,000/월 (월 50만 호출)\n• Enterprise — 문의 (무제한)',
     follow: ['결제는 어떻게 하나요?', 'API Key 발급은 어떻게 하나요?'],
+    keywords: ['요금제', '가격', '플랜', 'pro', 'basic', 'enterprise', '비용'],
   },
   {
     q: '결제는 어떻게 하나요?',
     a: 'KakaoPay 단건결제 또는 토스페이먼츠 결제위젯 v2를 지원합니다. 월 단위 구독이며 언제든지 해지 가능합니다.',
     follow: ['요금제 종류가 궁금해요', '토큰 유효 시간이 얼마인가요?'],
+    keywords: ['결제', '카카오페이', '토스', '구독', '해지'],
   },
   {
     q: '토큰 유효 시간이 얼마인가요?',
     a: '검증 성공 후 발급되는 one-time token의 기본 유효 시간은 180초(3분)입니다. 재사용이 불가하며 만료 시 CAPTCHA를 다시 풀어야 합니다.',
     follow: ['CAPTCHA 유형은 몇 가지인가요?', 'React/Vue SDK 지원하나요?'],
+    keywords: ['토큰', '유효시간', '만료', 'token'],
   },
   {
     q: '검증 속도가 궁금해요',
     a: '평균 검증 응답 속도는 약 120ms입니다. 정답 키 + 드래그 궤적 채점까지 포함한 서버 응답 기준입니다.',
     follow: ['봇 차단율이 얼마나 되나요?', 'API Key 발급은 어떻게 하나요?'],
+    keywords: ['속도', '응답시간', '검증 속도', 'ms', '레이턴시'],
   },
   {
     q: 'React/Vue SDK 지원하나요?',
     a: '네! React, Vue, FastAPI, Node.js, Django 등 다양한 SDK 플러그인을 지원합니다. 이용 신청 완료 후 가이드 페이지에서 확인하세요.',
     follow: ['API Key 발급은 어떻게 하나요?', '요금제 종류가 궁금해요'],
+    keywords: ['sdk', 'react', 'vue', 'fastapi', 'django', '연동'],
   },
   {
     q: '마이페이지는 어디 있나요?',
     a: '우측 상단 [로그인] 버튼으로 로그인 후 마이페이지에서 API Key 관리, 사용량 조회 등을 확인할 수 있습니다.',
     follow: ['API Key 발급은 어떻게 하나요?', '결제는 어떻게 하나요?'],
+    keywords: ['마이페이지', '로그인', '사용량'],
   },
 ];
 
@@ -54,6 +63,35 @@ const QUICK_STARTS = [
   'CAPTCHA 유형은 몇 가지인가요?',
   '요금제 종류가 궁금해요',
 ];
+
+function matchFaq(rawInput) {
+  const q = rawInput.trim().toLowerCase();
+  if (!q) return null;
+
+  let best = null;
+  let bestScore = 0;
+
+  for (const item of FAQ_TREE) {
+    let score = 0;
+
+    // 질문 전체 문자열 포함 (기존 로직 유지, 가장 강한 신호)
+    if (item.q.toLowerCase().includes(q) || q.includes(item.q.toLowerCase())) {
+      score += 5;
+    }
+
+    // 키워드 매칭 (부분 포함도 인정)
+    for (const kw of item.keywords || []) {
+      if (q.includes(kw.toLowerCase())) score += 2;
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = item;
+    }
+  }
+
+  return bestScore > 0 ? best : null;
+}
 
 function BotBubble({ text }) {
   return (
@@ -117,11 +155,11 @@ export default function ChatbotWidget() {
     setFollows(item?.follow || QUICK_STARTS);
   };
 
-  const handleSend = () => {
+    const handleSend = () => {
     const q = input.trim();
     if (!q) return;
     setInput('');
-    const item = FAQ_TREE.find(f => f.q.includes(q) || q.includes(f.q.slice(0, 6)));
+    const item = matchFaq(q);   // ← 여기 변경
     const newMsgs = [
       ...messages,
       { type: 'user', text: q },
