@@ -1,3 +1,5 @@
+// CaptchaDemo.jsx
+
 import React, { useState, useCallback, useRef } from 'react';
 
 /* ── SVG Glyphs ── */
@@ -254,7 +256,10 @@ export default function CaptchaDemo() {
   return (
     <div className="demo" id="demo">
       <div className="demo-top">
-        <div className="dots"><i/><i/><i/></div>
+        <div className="dots">
+          <i style={{ background: type === 1 ? 'var(--orange)' : 'var(--line)' }}/>
+          <i style={{ background: type === 2 ? 'var(--orange)' : 'var(--line)' }}/>
+        </div>
         {/* 유형 탭 */}
         <div style={{ display: 'flex', gap: 4, marginLeft: 12 }}>
           {[1, 2].map(t => (
