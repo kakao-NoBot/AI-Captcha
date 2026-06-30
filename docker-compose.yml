@@ -48,7 +48,6 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
     container_name: captcha-frontend
     ports:
       - "5173:5173"
