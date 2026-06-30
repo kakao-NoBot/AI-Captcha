@@ -69,6 +69,11 @@ export default function App() {
     setPage('plan-pay');
   };
 
+  const openMypageOnApiKey = () => {
+    setMypageTab('apikey');
+    setPage('mypage');
+  };
+
   // 오버레이가 열려 있을 때 배경(body) 스크롤바를 숨겨 이중 스크롤바 방지
   useEffect(() => {
     document.body.style.overflow = page ? 'hidden' : '';
