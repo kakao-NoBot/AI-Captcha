@@ -14,6 +14,17 @@ const PLANS = [
 
 export default function ApplyPage({ openPage, initialPlan = 'Pro' }) {
   const [plan, setPlan] = useState(initialPlan);
+  const [company, setCompany] = useState('');
+  const [email, setEmail] = useState('');
+  const [touched, setTouched] = useState(false);
+
+  const isValid = company.trim().length > 0 && email.trim().length > 0;
+
+  const handleSubmit = () => {
+    setTouched(true);
+    if (!isValid) return;
+    openPage('apply-done');
+  };
 
   return (
     <div className="po-body" style={{ maxWidth: 560 }}>
@@ -21,7 +32,6 @@ export default function ApplyPage({ openPage, initialPlan = 'Pro' }) {
       <h1 className="pg-h1">이용 신청</h1>
       <p className="pg-sub">요금제를 선택하고 신청을 완료하면 API Key가 즉시 발급됩니다.</p>
 
-      {/* 요금제 카드 — 동일 크기, 선택 시 주황 테두리 */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 24 }}>
         {PLANS.map(p => {
           const isSelected = plan === p.id;
@@ -36,7 +46,6 @@ export default function ApplyPage({ openPage, initialPlan = 'Pro' }) {
                 border: `2px solid ${isSelected ? 'var(--orange)' : 'var(--line)'}`,
                 borderRadius: 'var(--r)',
                 padding: '20px 12px',
-                /* 높이 고정으로 동일 크기 */
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -60,14 +69,54 @@ export default function ApplyPage({ openPage, initialPlan = 'Pro' }) {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <input className="pg-input" placeholder="서비스/회사명"/>
-        <input className="pg-input" type="email" placeholder="연락 이메일"/>
+        <div>
+          <input
+            className="pg-input"
+            placeholder="서비스/회사명"
+            value={company}
+            onChange={e => setCompany(e.target.value)}
+            style={{
+              width: '100%',
+              borderColor: touched && !company.trim() ? '#e0533d' : undefined,
+            }}
+          />
+          {touched && !company.trim() && (
+            <div style={{ color: '#e0533d', fontSize: 12, marginTop: 4 }}>서비스/회사명을 입력해주세요.</div>
+          )}
+        </div>
+        <div>
+          <input
+            className="pg-input"
+            type="email"
+            placeholder="연락 이메일"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            style={{
+              width: '100%',
+              borderColor: touched && !email.trim() ? '#e0533d' : undefined,
+            }}
+          />
+          {touched && !email.trim() && (
+            <div style={{ color: '#e0533d', fontSize: 12, marginTop: 4 }}>연락 이메일을 입력해주세요.</div>
+          )}
+        </div>
+
         <div style={{ background: 'var(--peach)', border: '1px solid var(--line)', borderRadius: 12, padding: 16, fontSize: 14, color: 'var(--ink-soft)' }}>
           선택된 요금제: <strong style={{ color: 'var(--orange)' }}>{PLAN_LABELS[plan]}</strong><br/>
           <span style={{ fontSize: 12 }}>신청 완료 후 마이페이지 &gt; API Key 관리에서 확인 가능</span>
         </div>
-        <button className="pg-btn primary" style={{ padding: 15, fontSize: 16 }}
-          onClick={() => openPage('apply-done')}>신청 및 API Key 발급</button>
+
+        <button
+          type="button"
+          className="pg-btn primary"
+          style={{
+            padding: 15,
+            fontSize: 16,
+            opacity: isValid ? 1 : 0.5,
+            cursor: isValid ? 'pointer' : 'not-allowed',
+          }}
+          onClick={handleSubmit}
+        >신청 및 API Key 발급</button>
       </div>
     </div>
   );
