@@ -1,3 +1,5 @@
+// LoginPage.jsx
+
 import React, { useState } from 'react';
 
 /* ── 공통 모달 래퍼 ── */
