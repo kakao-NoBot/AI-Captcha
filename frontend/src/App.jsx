@@ -82,9 +82,16 @@ export default function App() {
   const [planPayArgs, setPlanPayArgs] = useState({ plan: 'Pro' });
   const [mypageTab, setMypageTab] = useState('info');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [boardDetailOpen, setBoardDetailOpen] = useState(false);
 
-  const openPage = (id) => setPage(id);
-  const closePage = () => setPage(null);
+  const openPage = (id) => {
+    if (id === 'board') setBoardDetailOpen(false);
+    setPage(id);
+  };
+  const closePage = () => {
+    setBoardDetailOpen(false);
+    setPage(null);
+  };
   const handleLogin = () => { setIsLoggedIn(true); closePage(); };
   const handleLogout = () => { setIsLoggedIn(false); closePage(); };
 
@@ -183,11 +190,19 @@ export default function App() {
 
       {/* Board */}
       <div className={`page-overlay${page === 'board' ? ' active' : ''}`}>
-        <div className="po-nav">
-          <HomeButton onClick={closePage} />
-          <span className="po-title">공지사항 / FAQ / CAPTCHA 연구</span>
-        </div>
-        <BoardPage />
+        {!boardDetailOpen && (
+          <div className="po-nav">
+            <HomeButton onClick={closePage} />
+            <BrandLogo />
+          </div>
+        )}
+        <BoardPage
+          closePage={closePage}
+          openPage={openPage}
+          onDetailChange={setBoardDetailOpen}
+          isLoggedIn={isLoggedIn}
+          onLogout={handleLogout}
+        />
       </div>
 
       {/* Enterprise Inquiry */}

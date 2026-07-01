@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import vlurLogo from '../assets/vlur-logo-transparent-hq-2x.png';
 
 const PAGE_SIZE = 10;
 
@@ -30,6 +31,12 @@ const RESEARCH = [
   { id: 1, title: 'ImageNet 8-class 전이학습 결과 요약', date: '2026-04-10' },
 ];
 
+const BOARD_TABS = [
+  ['notice', '공지사항'],
+  ['faq', 'FAQ'],
+  ['research', 'CAPTCHA 연구'],
+];
+
 /* 페이지네이션 컴포넌트 */
 function Pagination({ total, page, pageSize, onChange }) {
   const totalPages = Math.ceil(total / pageSize);
@@ -50,12 +57,176 @@ function Pagination({ total, page, pageSize, onChange }) {
   );
 }
 
-export default function BoardPage() {
+function BoardDetail({ post, previousPost, nextPost, onBack, onSelectPost }) {
+  return (
+    <article className="board-detail">
+      <header className="board-detail-header">
+        <h1>{post.title}</h1>
+        <div className="board-detail-meta">
+          <div>
+            <span>작성자 <b>AICAPTCHA 운영팀</b></span>
+            <i aria-hidden="true" />
+            <span>조회 {120 + post.id * 17}</span>
+          </div>
+          <time dateTime={post.date}>{post.date.replaceAll('-', '.')}</time>
+        </div>
+      </header>
+
+      <div className="board-detail-content">
+        <p>테스트입니다.</p>
+      </div>
+
+      <nav className="board-detail-neighbors" aria-label="이전 및 다음 게시글">
+        <button type="button" disabled={!previousPost} onClick={() => previousPost && onSelectPost(previousPost)}>
+          <span>‹ 이전 글</span>
+          <b>{previousPost?.title || '이전 글이 없습니다.'}</b>
+        </button>
+        <button type="button" className="next" disabled={!nextPost} onClick={() => nextPost && onSelectPost(nextPost)}>
+          <span>다음 글 ›</span>
+          <b>{nextPost?.title || '다음 글이 없습니다.'}</b>
+        </button>
+      </nav>
+
+      <div className="board-detail-actions">
+        <button type="button" className="pg-btn" onClick={onBack}>목록으로</button>
+      </div>
+    </article>
+  );
+}
+
+function BoardSidebar({ tab, onChange }) {
+  return (
+    <aside className="board-sidebar">
+      <h2>커뮤니티</h2>
+      <nav aria-label="커뮤니티 메뉴">
+        {BOARD_TABS.map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            className={tab === id ? 'active' : ''}
+            onClick={() => onChange(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+    </aside>
+  );
+}
+
+function BoardHeader({ onHome, openPage, isLoggedIn, onLogout }) {
+  const goToSection = (sectionId) => {
+    onHome();
+    window.setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  };
+
+  return (
+    <header className="board-site-header">
+      <div className="board-site-header-inner">
+        <button type="button" className="board-site-brand" onClick={onHome} aria-label="VLUR CAPTCHA 홈">
+          <img src={vlurLogo} alt="VLUR" />
+          <span>VLUR <b>CAPTCHA</b></span>
+        </button>
+
+        <nav className="board-site-nav" aria-label="게시판 상단 메뉴">
+          <button type="button" onClick={() => goToSection('compare')}>차별성</button>
+          <button type="button" onClick={() => goToSection('metrics')}>성능</button>
+          <button type="button" onClick={() => goToSection('flow')}>검증 절차</button>
+          <button type="button" onClick={() => goToSection('cases')}>사용 사례</button>
+          <button type="button" onClick={() => goToSection('guide')}>가이드</button>
+          <button type="button" className="active">공지/FAQ</button>
+        </nav>
+
+        <div className="board-site-actions">
+          {isLoggedIn ? (
+            <>
+              <a
+                className="btn btn-ghost"
+                href="#"
+                onClick={(event) => { event.preventDefault(); openPage('mypage'); }}
+                style={{ textDecoration: 'underline', color: 'var(--ink-soft)' }}
+              >
+                홍길동님
+              </a>
+              <a
+                className="btn btn-outline"
+                href="#"
+                onClick={(event) => { event.preventDefault(); onLogout(); }}
+                style={{ padding: '7px 13px', fontSize: 13.5 }}
+              >
+                로그아웃
+              </a>
+            </>
+          ) : (
+            <>
+              <button type="button" className="board-user-link login" onClick={() => openPage('login')}>로그인</button>
+              <button type="button" className="board-auth-button signup" onClick={() => openPage('signup')}>회원가입</button>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default function BoardPage({ closePage, openPage, onDetailChange, isLoggedIn, onLogout }) {
   const [tab, setTab] = useState('notice');
   const [noticePage, setNoticePage] = useState(1);
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  useEffect(() => {
+    onDetailChange?.(Boolean(selectedPost));
+    if (selectedPost) {
+      document.querySelector('.page-overlay.active')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [selectedPost, onDetailChange]);
 
   /* 공지사항 페이지네이션 */
   const noticeSlice = NOTICES.slice((noticePage - 1) * PAGE_SIZE, noticePage * PAGE_SIZE);
+  const selectedIndex = selectedPost ? NOTICES.findIndex(post => post.id === selectedPost.id) : -1;
+  const previousPost = selectedIndex > 0 ? NOTICES[selectedIndex - 1] : null;
+  const nextPost = selectedIndex >= 0 && selectedIndex < NOTICES.length - 1 ? NOTICES[selectedIndex + 1] : null;
+
+  const changeTab = (nextTab) => {
+    setTab(nextTab);
+    setNoticePage(1);
+    setSelectedPost(null);
+  };
+
+  if (selectedPost) {
+    return (
+      <div className="board-page-shell">
+        <BoardHeader
+          onHome={() => { setSelectedPost(null); closePage(); }}
+          openPage={(pageId) => { setSelectedPost(null); openPage(pageId); }}
+          isLoggedIn={isLoggedIn}
+          onLogout={() => { setSelectedPost(null); onLogout(); }}
+        />
+
+        <main className="board-page-main">
+          <div className="po-body board-layout">
+            <BoardSidebar tab={tab} onChange={changeTab} />
+
+            <section className="board-main-content" aria-labelledby="board-section-title">
+              <div className="board-section-header">
+                <h1 className="pg-h1" id="board-section-title">공지사항</h1>
+              </div>
+
+              <BoardDetail
+                post={selectedPost}
+                previousPost={previousPost}
+                nextPost={nextPost}
+                onBack={() => setSelectedPost(null)}
+                onSelectPost={setSelectedPost}
+              />
+            </section>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="po-body">
@@ -64,8 +235,8 @@ export default function BoardPage() {
       <p className="pg-sub">공지사항, 자주 묻는 질문, 연구 리포트를 확인하세요.</p>
 
       <div className="tab-bar">
-        {[['notice','공지사항'],['faq','FAQ'],['research','CAPTCHA 연구']].map(([id, label]) => (
-          <button key={id} className={`tab${tab === id ? ' active' : ''}`} onClick={() => { setTab(id); setNoticePage(1); }}>{label}</button>
+        {BOARD_TABS.map(([id, label]) => (
+          <button key={id} className={`tab${tab === id ? ' active' : ''}`} onClick={() => changeTab(id)}>{label}</button>
         ))}
       </div>
 
@@ -78,7 +249,20 @@ export default function BoardPage() {
             </thead>
             <tbody>
               {noticeSlice.map(n => (
-                <tr key={n.id} style={{ cursor: 'pointer' }}>
+                <tr
+                  key={n.id}
+                  className="board-row"
+                  role="link"
+                  tabIndex={0}
+                  aria-label={`${n.title} 상세 보기`}
+                  onClick={() => setSelectedPost(n)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setSelectedPost(n);
+                    }
+                  }}
+                >
                   <td className="num">{n.id}</td>
                   <td>
                     {n.badge && <span className="badge-notice">공지</span>}
