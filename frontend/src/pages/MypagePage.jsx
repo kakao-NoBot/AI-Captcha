@@ -26,17 +26,28 @@ function Modal({ title, onClose, children }) {
 /* ── 비밀번호 변경 모달 ── */
 function ChangePwModal({ onClose }) {
   const [done, setDone] = useState(false);
+  const [current, setCurrent] = useState('');
+  const [next, setNext] = useState('');
+  const [confirm, setConfirm] = useState('');
+
+  const isValid = current.trim() && next.trim() && confirm.trim();
+
   return (
     <Modal title="비밀번호 변경" onClose={onClose}>
       {!done ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input className="pg-input" type="password" placeholder="현재 비밀번호"/>
-          <input className="pg-input" type="password" placeholder="새 비밀번호"/>
-          <input className="pg-input" type="password" placeholder="새 비밀번호 확인"/>
+          <input className="pg-input" type="password" value={current} onChange={e => setCurrent(e.target.value)} placeholder="현재 비밀번호"/>
+          <input className="pg-input" type="password" value={next} onChange={e => setNext(e.target.value)} placeholder="새 비밀번호"/>
+          <input className="pg-input" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="새 비밀번호 확인"/>
           <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)' }}>영문·숫자·특수문자 포함 8자 이상</p>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button className="pg-btn" style={{ flex: 1, padding: 13 }} onClick={onClose}>취소</button>
-            <button className="pg-btn primary" style={{ flex: 1, padding: 13 }} onClick={() => setDone(true)}>변경하기</button>
+            <button
+              className="pg-btn primary"
+              style={{ flex: 1, padding: 13, opacity: isValid ? 1 : 0.5, cursor: isValid ? 'pointer' : 'not-allowed' }}
+              onClick={() => setDone(true)}
+              disabled={!isValid}
+            >변경하기</button>
           </div>
         </div>
       ) : (
@@ -53,16 +64,27 @@ function ChangePwModal({ onClose }) {
 /* ── 정보 수정 모달 ── */
 function EditInfoModal({ onClose }) {
   const [done, setDone] = useState(false);
+  const [name, setName] = useState('홍길동');
+  const [email, setEmail] = useState('user@example.com');
+  const [phone, setPhone] = useState('010-1234-5678');
+
+  const isValid = name.trim() && email.trim() && phone.trim();
+
   return (
     <Modal title="정보 수정" onClose={onClose}>
       {!done ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input className="pg-input" defaultValue="홍길동" placeholder="이름"/>
-          <input className="pg-input" type="email" defaultValue="user@example.com" placeholder="이메일"/>
-          <input className="pg-input" type="tel" defaultValue="010-1234-5678" placeholder="휴대폰 번호"/>
+          <input className="pg-input" value={name} onChange={e => setName(e.target.value)} placeholder="이름"/>
+          <input className="pg-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="이메일"/>
+          <input className="pg-input" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="휴대폰 번호"/>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button className="pg-btn" style={{ flex: 1, padding: 13 }} onClick={onClose}>취소</button>
-            <button className="pg-btn primary" style={{ flex: 1, padding: 13 }} onClick={() => setDone(true)}>저장</button>
+            <button
+              className="pg-btn primary"
+              style={{ flex: 1, padding: 13, opacity: isValid ? 1 : 0.5, cursor: isValid ? 'pointer' : 'not-allowed' }}
+              onClick={() => setDone(true)}
+              disabled={!isValid}
+            >저장</button>
           </div>
         </div>
       ) : (
@@ -223,8 +245,8 @@ function UsageTab() {
   );
 }
 
-/* ── 탈퇴 확인 모달 (작은 사이즈) ── */
-function ConfirmDeactivateModal({ onConfirm, onClose }) {
+/* ── 탈퇴 동의 체크 경고 모달 ── */
+function AgreeWarnModal({ onClose }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
@@ -247,14 +269,8 @@ function ConfirmDeactivateModal({ onConfirm, onClose }) {
             <path d="M10.3 3.9 2.6 17.5A1.6 1.6 0 0 0 4 20h16a1.6 1.6 0 0 0 1.4-2.5L13.7 3.9a1.6 1.6 0 0 0-2.8 0Z" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
           </svg>
         </div>
-        <div>
-          <strong style={{ display: 'block', fontSize: 16, marginBottom: 4 }}>정말로 탈퇴하시겠어요?</strong>
-          <span style={{ fontSize: 13, color: 'var(--muted)' }}>이 작업은 되돌릴 수 없습니다.</span>
-        </div>
-        <div style={{ display: 'flex', gap: 8, width: '100%', marginTop: 4 }}>
-          <button className="pg-btn" style={{ flex: 1, padding: 11 }} onClick={onClose}>취소</button>
-          <button className="pg-btn danger" style={{ flex: 1, padding: 11 }} onClick={onConfirm}>확인</button>
-        </div>
+        <strong style={{ fontSize: 16 }}>탈퇴 동의 체크박스를 선택해주세요.</strong>
+        <button className="pg-btn primary" style={{ width: '100%', padding: 11 }} onClick={onClose}>확인</button>
       </div>
     </div>
   );
@@ -297,9 +313,10 @@ function DeactivateTab({ closePage }) {
   const [agreed, setAgreed] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showDone, setShowDone] = useState(false);
+  const [showAgreeWarn, setShowAgreeWarn] = useState(false);
 
   const confirm_ = () => {
-    if (!agreed) { alert('탈퇴 동의 체크박스를 선택해주세요.'); return; }
+    if (!agreed) { setShowAgreeWarn(true); return; }
     setShowConfirm(true);
   };
 
@@ -343,6 +360,9 @@ function DeactivateTab({ closePage }) {
       )}
       {showDone && (
         <DeactivateDoneModal onClose={finishClose} />
+      )}
+      {showAgreeWarn && (
+        <AgreeWarnModal onClose={() => setShowAgreeWarn(false)} />
       )}
     </>
   );
