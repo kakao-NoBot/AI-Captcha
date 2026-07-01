@@ -185,7 +185,18 @@ h1 .hl::after {
   letter-spacing: .08em; background: #fff; border: 1px solid var(--line);
   padding: 3px 9px; border-radius: 999px; white-space: nowrap;
 }
+.captcha-reference {
+  display: flex; justify-content: center; margin-top: 16px;
+}
+.captcha-reference img {
+  display: block; width: 420px; max-width: 85%; height: auto;
+  border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-sm);
+}
 .tiles { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 16px; }
+.tiles.choice-tiles { max-width: 650px; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px auto 0; }
+.choice-tiles .tile {
+  min-height: 80px; aspect-ratio: auto;
+}
 .tile {
   position: relative; aspect-ratio: 0.82; border: 1.5px solid var(--line); border-radius: 14px;
   background: #fff; cursor: grab; display: flex; flex-direction: column; align-items: center;

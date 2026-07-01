@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import cap1Question from '../assets/cap1_Question.png';
+import bananaAscii from '../assets/banana_ascii.jpg';
 
 /* ── SVG Glyphs ── */
 const GLYPHS = {
@@ -81,10 +82,14 @@ function ClickCaptcha() {
   return (
     <div className="demo-body">
       <div className="demo-q">
-        <span>아래 4개 중 <b style={{ color: 'var(--orange)' }}>바나나</b>를 클릭하세요</span>
+        <span>아래 <b style={{ color: 'var(--orange)' }}>이미지</b>에 해당하는 보기를 선택해 주세요</span>
       </div>
 
-      <div className="tiles" style={{ marginTop: 16 }}>
+      <div className="captcha-reference">
+        <img src={bananaAscii} alt="바나나 ASCII 아트" />
+      </div>
+
+      <div className="tiles choice-tiles">
         {tiles.map(tile => (
           <button
             key={tile.key}
@@ -202,6 +207,7 @@ function DragCaptcha() {
           src={cap1Question}
           alt="바나나를 장바구니로 드래그하세요"
         />
+
       </div>
 
       <div className="tiles">
