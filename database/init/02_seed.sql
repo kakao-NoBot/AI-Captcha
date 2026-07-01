@@ -20,9 +20,10 @@ INSERT INTO plans (plan_name, monthly_price, api_limit, captcha_limit) VALUES
 --   운영 전 반드시 재생성:
 --     python3 -c "import bcrypt; print(bcrypt.hashpw(b'admin1234', bcrypt.gensalt(12)).decode())"
 -- ============================================================
-INSERT INTO users (login_id, password_hash, email, phone, role, plan_id, created_at)
+INSERT INTO users (user_id, user_name, password_hash, email, phone, role, plan_id, created_at)
 VALUES (
     'admin',
+    '관리자',
     '$2b$12$SEED.DUMMY.HASH.REPLACE.BEFORE.USE.xxxxxxxxxxxxxxxxxx.',
     'admin@example.com',
     NULL,
@@ -34,9 +35,10 @@ VALUES (
 -- ============================================================
 -- [3] 테스트 일반 사용자 (Free 플랜)
 -- ============================================================
-INSERT INTO users (login_id, password_hash, email, phone, role, plan_id, created_at, subscription_date)
+INSERT INTO users (user_id, user_name, password_hash, email, phone, role, plan_id, created_at, subscription_date)
 VALUES (
     'testuser',
+    '테스트 사용자',
     '$2b$12$SEED.DUMMY.HASH.REPLACE.BEFORE.USE.xxxxxxxxxxxxxxxxxx.',
     'test@example.com',
     '010-1234-5678',
@@ -53,7 +55,7 @@ VALUES (
 INSERT INTO api_keys (api_key_hash, user_id, plan_id, created_at, expired_at, is_active)
 VALUES (
     SHA2('dev-sample-key-001', 256),
-    (SELECT user_id FROM users WHERE login_id = 'testuser'),
+    'testuser',
     (SELECT plan_id FROM plans WHERE plan_name = 'Free'),
     NOW(),
     DATE_ADD(NOW(), INTERVAL 1 YEAR),
@@ -103,12 +105,12 @@ VALUES (
 -- ============================================================
 -- [9] captcha_options — type2_identify 선택지 매핑
 -- ============================================================
-SET @type1_captcha_id = (
+SET @type2_captcha_id = (
     SELECT captcha_id FROM captchas WHERE captcha_type = 'type2_identify' LIMIT 1
 );
 
-INSERT INTO captcha_options (captcha_id, image_id, position, is_correct) VALUES
-    (@type1_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_apple_001.jpg'),  1, 1),
-    (@type1_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_banana_001.jpg'), 2, 0),
-    (@type1_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_bag_001.jpg'),    3, 0),
-    (@type1_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_cup_001.jpg'),    4, 0);
+INSERT INTO captcha_options (captcha_id, image_id, position, is_correct_server_side) VALUES
+    (@type2_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_apple_001.jpg'),  1, 1),
+    (@type2_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_banana_001.jpg'), 2, 0),
+    (@type2_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_bag_001.jpg'),    3, 0),
+    (@type2_captcha_id, (SELECT image_id FROM captcha_images WHERE filename = 'opt_cup_001.jpg'),    4, 0);

@@ -234,7 +234,6 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
             onChange={e => setLoginId(e.target.value)}
             style={attempted && !loginId.trim() ? errorStyle : {}}
           />
-
           <input
             className="pg-input"
             type="password"

@@ -32,13 +32,36 @@ function ChangePwModal({ onClose }) {
 
   const isValid = current.trim() && next.trim() && confirm.trim();
 
+  const errorStyle = { border: '1.5px solid #c0392b' };
+
   return (
     <Modal title="비밀번호 변경" onClose={onClose}>
       {!done ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input className="pg-input" type="password" value={current} onChange={e => setCurrent(e.target.value)} placeholder="현재 비밀번호"/>
-          <input className="pg-input" type="password" value={next} onChange={e => setNext(e.target.value)} placeholder="새 비밀번호"/>
-          <input className="pg-input" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="새 비밀번호 확인"/>
+          <input
+            className="pg-input"
+            type="password"
+            value={current}
+            onChange={e => setCurrent(e.target.value)}
+            placeholder="현재 비밀번호"
+            style={!current.trim() ? errorStyle : {}}
+          />
+          <input
+            className="pg-input"
+            type="password"
+            value={next}
+            onChange={e => setNext(e.target.value)}
+            placeholder="새 비밀번호"
+            style={!next.trim() ? errorStyle : {}}
+          />
+          <input
+            className="pg-input"
+            type="password"
+            value={confirm}
+            onChange={e => setConfirm(e.target.value)}
+            placeholder="새 비밀번호 확인"
+            style={!confirm.trim() ? errorStyle : {}}
+          />
           <p style={{ margin: 0, fontSize: 12, color: 'var(--muted)' }}>영문·숫자·특수문자 포함 8자 이상</p>
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button className="pg-btn" style={{ flex: 1, padding: 13 }} onClick={onClose}>취소</button>
@@ -70,13 +93,35 @@ function EditInfoModal({ onClose }) {
 
   const isValid = name.trim() && email.trim() && phone.trim();
 
+  const errorStyle = { border: '1.5px solid #c0392b' };
+
   return (
     <Modal title="정보 수정" onClose={onClose}>
       {!done ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input className="pg-input" value={name} onChange={e => setName(e.target.value)} placeholder="이름"/>
-          <input className="pg-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="이메일"/>
-          <input className="pg-input" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="휴대폰 번호"/>
+          <input
+            className="pg-input"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="이름"
+            style={!name.trim() ? errorStyle : {}}
+          />
+          <input
+            className="pg-input"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="이메일"
+            style={!email.trim() ? errorStyle : {}}
+          />
+          <input
+            className="pg-input"
+            type="tel"
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+            placeholder="휴대폰 번호"
+            style={!phone.trim() ? errorStyle : {}}
+          />
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button className="pg-btn" style={{ flex: 1, padding: 13 }} onClick={onClose}>취소</button>
             <button
@@ -134,24 +179,97 @@ function InfoTab() {
   );
 }
 
+/* ── API Key 재발급 확인 모달 ── */
+function ReissueConfirmModal({ onConfirm, onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(36,27,21,.45)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', padding: 24,
+    }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div style={{
+        background: '#fff', borderRadius: 'var(--r)', padding: '28px 24px',
+        width: '100%', maxWidth: 320, boxShadow: 'var(--shadow-md)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: '50%',
+          background: 'var(--orange)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg viewBox="0 0 24 24" fill="none" width={22} height={22}>
+            <path d="M12 8v5M12 16.5h.01" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
+            <path d="M10.3 3.9 2.6 17.5A1.6 1.6 0 0 0 4 20h16a1.6 1.6 0 0 0 1.4-2.5L13.7 3.9a1.6 1.6 0 0 0-2.8 0Z" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <strong style={{ display: 'block', fontSize: 16, marginBottom: 4 }}>재발급하시겠어요?</strong>
+          <span style={{ fontSize: 13, color: 'var(--muted)' }}>재발급하면 기존 Key가 즉시 만료됩니다.</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8, width: '100%', marginTop: 4 }}>
+          <button className="pg-btn" style={{ flex: 1, padding: 11 }} onClick={onClose}>취소</button>
+          <button className="pg-btn primary" style={{ flex: 1, padding: 11 }} onClick={onConfirm}>확인</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── API Key 재발급 완료 모달 ── */
+function ReissueDoneModal({ onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(36,27,21,.45)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', padding: 24,
+    }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div style={{
+        background: '#fff', borderRadius: 'var(--r)', padding: '28px 24px',
+        width: '100%', maxWidth: 320, boxShadow: 'var(--shadow-md)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: '50%',
+          background: 'var(--ok)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg viewBox="0 0 34 34" fill="none" width={22} height={22}>
+            <path d="M7 17.5 13.5 24 27 10" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <strong style={{ fontSize: 16 }}>새 API Key가 발급되었습니다.</strong>
+        <button className="pg-btn primary" style={{ width: '100%', padding: 11 }} onClick={onClose}>확인</button>
+      </div>
+    </div>
+  );
+}
+
 /* ── SC-08 API Key 탭 ── */
 function ApiKeyTab({ openPage }) {
   const [visible, setVisible] = useState(false);
   const [key, setKey] = useState(realKey);
   const [copyLabel, setCopyLabel] = useState('복사');
+  const [showReissueConfirm, setShowReissueConfirm] = useState(false);
+  const [showReissueDone, setShowReissueDone] = useState(false);
 
   const copy = () => {
     navigator.clipboard.writeText(key).catch(() => {});
     setCopyLabel('복사됨 ✓');
     setTimeout(() => setCopyLabel('복사'), 1500);
   };
+
   const reissue = () => {
-    if (window.confirm('재발급하면 기존 Key가 즉시 만료됩니다. 계속하시겠어요?')) {
-      const newKey = 'sk-aicap_prod_' + Math.random().toString(36).slice(2, 18) + 'xxxx';
-      setKey(newKey);
-      setVisible(true);
-      alert('새 API Key가 발급되었습니다.');
-    }
+    setShowReissueConfirm(true);
+  };
+
+  const doReissue = () => {
+    const newKey = 'sk-aicap_prod_' + Math.random().toString(36).slice(2, 18) + 'xxxx';
+    setKey(newKey);
+    setVisible(true);
+    setShowReissueConfirm(false);
+    setShowReissueDone(true);
   };
 
   return (
@@ -182,6 +300,16 @@ function ApiKeyTab({ openPage }) {
       <div style={{ background: 'var(--peach)', border: '1px solid var(--line)', borderRadius: 10, padding: '14px 16px', marginTop: 14, fontSize: 13, color: 'var(--ink-soft)', maxWidth: 560 }}>
         ※ 발급 한도 / Key 개수 제한은 요금제(plan)별 api_limit 정책에 따름
       </div>
+
+      {showReissueConfirm && (
+        <ReissueConfirmModal
+          onConfirm={doReissue}
+          onClose={() => setShowReissueConfirm(false)}
+        />
+      )}
+      {showReissueDone && (
+        <ReissueDoneModal onClose={() => setShowReissueDone(false)} />
+      )}
     </>
   );
 }
@@ -245,6 +373,43 @@ function UsageTab() {
   );
 }
 
+/* ── 탈퇴 확인 모달 (작은 사이즈) ── */
+function ConfirmDeactivateModal({ onConfirm, onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(36,27,21,.45)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', padding: 24,
+    }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div style={{
+        background: '#fff', borderRadius: 'var(--r)', padding: '28px 24px',
+        width: '100%', maxWidth: 320, boxShadow: 'var(--shadow-md)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: '50%',
+          background: '#c0392b', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg viewBox="0 0 24 24" fill="none" width={22} height={22}>
+            <path d="M12 8v5M12 16.5h.01" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
+            <path d="M10.3 3.9 2.6 17.5A1.6 1.6 0 0 0 4 20h16a1.6 1.6 0 0 0 1.4-2.5L13.7 3.9a1.6 1.6 0 0 0-2.8 0Z" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <strong style={{ display: 'block', fontSize: 16, marginBottom: 4 }}>정말로 탈퇴하시겠어요?</strong>
+          <span style={{ fontSize: 13, color: 'var(--muted)' }}>이 작업은 되돌릴 수 없습니다.</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8, width: '100%', marginTop: 4 }}>
+          <button className="pg-btn" style={{ flex: 1, padding: 11 }} onClick={onClose}>취소</button>
+          <button className="pg-btn danger" style={{ flex: 1, padding: 11 }} onClick={onConfirm}>확인</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── 탈퇴 동의 체크 경고 모달 ── */
 function AgreeWarnModal({ onClose }) {
   return (
@@ -270,6 +435,37 @@ function AgreeWarnModal({ onClose }) {
           </svg>
         </div>
         <strong style={{ fontSize: 16 }}>탈퇴 동의 체크박스를 선택해주세요.</strong>
+        <button className="pg-btn primary" style={{ width: '100%', padding: 11 }} onClick={onClose}>확인</button>
+      </div>
+    </div>
+  );
+}
+
+/* ── 비밀번호 미입력 경고 모달 ── */
+function PasswordWarnModal({ onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(36,27,21,.45)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', padding: 24,
+    }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div style={{
+        background: '#fff', borderRadius: 'var(--r)', padding: '28px 24px',
+        width: '100%', maxWidth: 320, boxShadow: 'var(--shadow-md)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: '50%',
+          background: '#c0392b', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg viewBox="0 0 24 24" fill="none" width={22} height={22}>
+            <path d="M12 8v5M12 16.5h.01" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
+            <path d="M10.3 3.9 2.6 17.5A1.6 1.6 0 0 0 4 20h16a1.6 1.6 0 0 0 1.4-2.5L13.7 3.9a1.6 1.6 0 0 0-2.8 0Z" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <strong style={{ fontSize: 16 }}>비밀번호를 입력해주세요.</strong>
         <button className="pg-btn primary" style={{ width: '100%', padding: 11 }} onClick={onClose}>확인</button>
       </div>
     </div>
@@ -310,12 +506,15 @@ function DeactivateDoneModal({ onClose }) {
 
 /* ── SC-17 계정 탈퇴 탭 (탈퇴사유 제거) ── */
 function DeactivateTab({ closePage }) {
+  const [password, setPassword] = useState('');
   const [agreed, setAgreed] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showDone, setShowDone] = useState(false);
   const [showAgreeWarn, setShowAgreeWarn] = useState(false);
+  const [showPwWarn, setShowPwWarn] = useState(false);
 
   const confirm_ = () => {
+    if (!password.trim()) { setShowPwWarn(true); return; }
     if (!agreed) { setShowAgreeWarn(true); return; }
     setShowConfirm(true);
   };
@@ -330,6 +529,8 @@ function DeactivateTab({ closePage }) {
     closePage();
   };
 
+  const isValid = password.trim() && agreed;
+
   return (
     <>
       <div className="pg-label">SC-17 · 계정 탈퇴</div>
@@ -341,14 +542,24 @@ function DeactivateTab({ closePage }) {
         작성한 게시글/문의 내역은 별도 처리 정책에 따릅니다.
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 420 }}>
-        <input className="pg-input" type="password" placeholder="비밀번호 확인"/>
+        <input
+          className="pg-input"
+          type="password"
+          placeholder="비밀번호 확인"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
         <label style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: 'var(--ink-soft)', cursor: 'pointer' }}>
           <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ width: 17, height: 17, accentColor: '#c0392b' }}/>
           위 내용을 확인했으며 탈퇴에 동의합니다
         </label>
         <div style={{ display: 'flex', gap: 10 }}>
           <button className="pg-btn">취소</button>
-          <button className="pg-btn danger" onClick={confirm_}>탈퇴하기</button>
+          <button
+            className="pg-btn danger"
+            onClick={confirm_}
+            style={{ opacity: isValid ? 1 : 0.5, cursor: isValid ? 'pointer' : 'not-allowed' }}
+          >탈퇴하기</button>
         </div>
       </div>
 
@@ -363,6 +574,9 @@ function DeactivateTab({ closePage }) {
       )}
       {showAgreeWarn && (
         <AgreeWarnModal onClose={() => setShowAgreeWarn(false)} />
+      )}
+      {showPwWarn && (
+        <PasswordWarnModal onClose={() => setShowPwWarn(false)} />
       )}
     </>
   );

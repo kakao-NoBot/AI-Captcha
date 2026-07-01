@@ -39,12 +39,11 @@ CREATE TABLE IF NOT EXISTS plans (
 -- 2. users: service members and administrators.
 -- ============================================================
 CREATE TABLE IF NOT EXISTS users (
-    user_id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    login_id          VARCHAR(80)     NOT NULL,
+    user_id           VARCHAR(50)     NOT NULL,
     user_name         VARCHAR(100)    NOT NULL,
     password_hash     VARCHAR(255)    NOT NULL,
     email             VARCHAR(255)    NOT NULL,
-    phone             VARCHAR(40)     NULL,
+    phone             VARCHAR(30)     NULL,
     role              ENUM('user','admin') NOT NULL DEFAULT 'user',
     plan_id           BIGINT UNSIGNED NULL,
     company_name      VARCHAR(255)    NULL,
@@ -54,7 +53,6 @@ CREATE TABLE IF NOT EXISTS users (
     created_at        DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at        DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id),
-    UNIQUE KEY uk_users_login_id (login_id),
     UNIQUE KEY uk_users_email (email),
     KEY idx_users_plan_id (plan_id),
     KEY idx_users_role (role),
@@ -70,7 +68,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS api_keys (
     api_key_id   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     api_key_hash CHAR(64)        NOT NULL,
-    user_id      BIGINT UNSIGNED NOT NULL,
+    user_id      VARCHAR(50)     NOT NULL,
     plan_id      BIGINT UNSIGNED NULL,
     key_name     VARCHAR(120)    NULL,
     created_at   DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -94,7 +92,7 @@ CREATE TABLE IF NOT EXISTS api_keys (
 -- ============================================================
 CREATE TABLE IF NOT EXISTS payments (
     payment_id     BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id        BIGINT UNSIGNED NOT NULL,
+    user_id        VARCHAR(50)     NOT NULL,
     plan_id        BIGINT UNSIGNED NULL,
     amount         DECIMAL(12,2)   NOT NULL,
     pg_provider    ENUM('toss','kakao') NOT NULL,
@@ -125,7 +123,7 @@ CREATE TABLE IF NOT EXISTS payments (
 -- ============================================================
 CREATE TABLE IF NOT EXISTS boards (
     board_id   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id    BIGINT UNSIGNED NULL,
+    user_id    VARCHAR(50)     NULL,
     board_type ENUM('notice','qna','inquiry') NOT NULL,
     company    VARCHAR(255)    NULL,
     title      VARCHAR(255)    NOT NULL,
@@ -148,7 +146,7 @@ CREATE TABLE IF NOT EXISTS boards (
 CREATE TABLE IF NOT EXISTS board_answers (
     answer_id      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     board_id       BIGINT UNSIGNED NOT NULL,
-    admin_id       BIGINT UNSIGNED NOT NULL,
+    admin_id       VARCHAR(50)     NOT NULL,
     answer_content TEXT            NOT NULL,
     created_at     DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at     DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -189,7 +187,7 @@ CREATE TABLE IF NOT EXISTS contact_inquiries (
 -- ============================================================
 CREATE TABLE IF NOT EXISTS client_sites (
     site_id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id         BIGINT UNSIGNED NOT NULL,
+    user_id         VARCHAR(50)     NOT NULL,
     api_key_id      BIGINT UNSIGNED NULL,
     site_name       VARCHAR(120)    NOT NULL,
     service_url     VARCHAR(2048)   NOT NULL,
