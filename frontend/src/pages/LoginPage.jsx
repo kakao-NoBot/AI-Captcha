@@ -120,7 +120,7 @@ function FindPwModal({ onClose }) {
           <p style={{ margin: 0, fontSize: 14, color: 'var(--ink-soft)' }}>가입한 아이디와 이메일을 입력하면 인증코드를 발송합니다.</p>
           <input
             className="pg-input"
-            placeholder="아이디 (login_id)"
+            placeholder="아이디"
             value={loginId}
             onChange={e => setLoginId(e.target.value)}
             style={attempted1 && !loginId.trim() ? errorStyle : {}}
@@ -211,8 +211,12 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
   const errorStyle = { border: '1.5px solid #c0392b' };
 
   const handleLogin = () => {
-    if (!isValid) { setAttempted(true); return; }
-    openPage('mypage');
+    if (!isValid) {
+      setAttempted(true);
+      return;
+    }
+
+    onLogin();
   };
 
   return (
@@ -221,6 +225,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
         <div className="pg-eyebrow">SC-06</div>
         <h1 className="pg-h1">로그인</h1>
         <p className="pg-sub">계정에 로그인하세요.</p>
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <input
             className="pg-input"
@@ -237,34 +242,93 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
             onChange={e => setPassword(e.target.value)}
             style={attempted && !password.trim() ? errorStyle : {}}
           />
+
           <button
             className="pg-btn primary"
-            style={{ width: '100%', padding: 15, fontSize: 16, opacity: isValid ? 1 : 0.5, cursor: isValid ? 'pointer' : 'not-allowed' }}
+            style={{
+              width: '100%',
+              padding: 15,
+              fontSize: 16,
+              opacity: isValid ? 1 : 0.5,
+              cursor: isValid ? 'pointer' : 'not-allowed'
+            }}
             onClick={handleLogin}
-          >로그인</button>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--muted)' }}>
-            <button onClick={() => setModal('findId')}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 13, padding: 0 }}>
+          >
+            로그인
+          </button>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: 13,
+              color: 'var(--muted)'
+            }}
+          >
+            <button
+              onClick={() => setModal('findId')}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--muted)',
+                fontSize: 13,
+                padding: 0
+              }}
+            >
               아이디 찾기
             </button>
-            <button onClick={() => setModal('findPw')}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 13, padding: 0 }}>
+
+            <button
+              onClick={() => setModal('findPw')}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--muted)',
+                fontSize: 13,
+                padding: 0
+              }}
+            >
               비밀번호 찾기
             </button>
           </div>
-          <hr className="pg-divider"/>
-          <div style={{ textAlign: 'center', fontSize: 14, color: 'var(--ink-soft)' }}>
+
+          <hr className="pg-divider" />
+
+          <div
+            style={{
+              textAlign: 'center',
+              fontSize: 14,
+              color: 'var(--ink-soft)'
+            }}
+          >
             계정이 없으신가요?
-            <button onClick={() => openPage('signup')}
-              style={{ background: 'none', border: 'none', color: 'var(--orange)', fontWeight: 700, fontSize: 14, cursor: 'pointer', padding: 0, marginLeft: 4 }}>
+            <button
+              onClick={() => openPage('signup')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--orange)',
+                fontWeight: 700,
+                fontSize: 14,
+                cursor: 'pointer',
+                padding: 0,
+                marginLeft: 4
+              }}
+            >
               회원가입
             </button>
           </div>
         </div>
       </div>
 
-      {modal === 'findId' && <FindIdModal onClose={() => setModal(null)} />}
-      {modal === 'findPw' && <FindPwModal onClose={() => setModal(null)} />}
+      {modal === 'findId' && (
+        <FindIdModal onClose={() => setModal(null)} />
+      )}
+      {modal === 'findPw' && (
+        <FindPwModal onClose={() => setModal(null)} />
+      )}
     </>
   );
 }
