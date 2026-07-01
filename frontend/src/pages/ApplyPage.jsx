@@ -1,3 +1,5 @@
+// pages/ApplyPage.jsx
+
 import React, { useState } from 'react';
 
 const PLAN_LABELS = {
@@ -11,6 +13,65 @@ const PLANS = [
   { id: 'Pro',        label: 'PRO ★',      price: '₩89,000', sub: '월 50만 호출' },
   { id: 'Enterprise', label: 'ENTERPRISE', price: '문의',   sub: '무제한' },
 ];
+
+/* ── 스텝 인디케이터 원형 배지 ── */
+function StepCircle({ state, index }) {
+  // state: 'done' | 'active' | 'pending'
+  const base = {
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 13,
+    fontWeight: 700,
+    flexShrink: 0,
+    transition: 'all .2s',
+    boxSizing: 'border-box',
+  };
+
+  if (state === 'done') {
+    return (
+      <div style={{
+        ...base,
+        background: 'linear-gradient(135deg, var(--orange), var(--gold))',
+        color: '#fff',
+        border: 'none',
+        boxShadow: '0 2px 6px rgba(240,105,30,.35)',
+      }}>
+        <svg viewBox="0 0 24 24" fill="none" width={15} height={15}>
+          <path d="M5 12.5 9.5 17 19 7" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+    );
+  }
+
+  if (state === 'active') {
+    return (
+      <div style={{
+        ...base,
+        background: '#fff',
+        color: 'var(--orange)',
+        border: '2px solid var(--orange)',
+        boxShadow: '0 0 0 4px rgba(240,105,30,.12)',
+      }}>
+        {index}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      ...base,
+      background: 'var(--paper)',
+      color: 'var(--muted)',
+      border: '1.5px solid var(--line)',
+    }}>
+      {index}
+    </div>
+  );
+}
 
 export default function ApplyPage({ openPage, initialPlan = 'Pro' }) {
   const [plan, setPlan] = useState(initialPlan);
@@ -27,7 +88,7 @@ export default function ApplyPage({ openPage, initialPlan = 'Pro' }) {
   };
 
   return (
-    <div className="po-body">
+    <div className="po-body" style={{ maxWidth: 560 }}>
       <div className="pg-eyebrow">SC-15 · API Key 발급 신청</div>
       <h1 className="pg-h1">이용 신청</h1>
       <p className="pg-sub">요금제를 선택하고 신청을 완료하면 API Key가 즉시 발급됩니다.</p>

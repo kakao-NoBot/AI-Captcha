@@ -1,4 +1,64 @@
+// PlanPayPage.jsx
+
 import React, { useState } from 'react';
+
+/* ── 스텝 인디케이터 원형 배지 ── */
+function StepCircle({ state, index }) {
+  const base = {
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 13,
+    fontWeight: 700,
+    flexShrink: 0,
+    transition: 'all .2s',
+    boxSizing: 'border-box',
+  };
+
+  if (state === 'done') {
+    return (
+      <div style={{
+        ...base,
+        background: 'linear-gradient(135deg, var(--orange), var(--gold))',
+        color: '#fff',
+        border: 'none',
+        boxShadow: '0 2px 6px rgba(240,105,30,.35)',
+      }}>
+        <svg viewBox="0 0 24 24" fill="none" width={15} height={15}>
+          <path d="M5 12.5 9.5 17 19 7" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+    );
+  }
+
+  if (state === 'active') {
+    return (
+      <div style={{
+        ...base,
+        background: '#fff',
+        color: 'var(--orange)',
+        border: '2px solid var(--orange)',
+        boxShadow: '0 0 0 4px rgba(240,105,30,.12)',
+      }}>
+        {index}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      ...base,
+      background: 'var(--paper)',
+      color: 'var(--muted)',
+      border: '1.5px solid var(--line)',
+    }}>
+      {index}
+    </div>
+  );
+}
 
 const PLANS = {
   Basic: { name: 'Basic 요금제', price: '0', raw: 0, vat: 0, total: '0', features: '✓ 월 100,000 호출\n✓ API Key 1개\n✓ CAPTCHA 유형 1·2 지원', isFree: true, comparePrice: '89,000' },
@@ -80,25 +140,26 @@ export default function PlanPayPage({ planName = 'Pro', closePage, openPage, ope
       </div>
 
       {/* Progress steps */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28, flexWrap: 'wrap' }}>
-        {[
-          { label: '요금제 선택', state: 'done' },
-          { label: '결제 수단 선택', state: 'active' },
-          { label: '결제 인증', state: 'pending' },
-          { label: 'API Key 발급', state: 'pending' },
-        ].map((s, i, arr) => (
-          <React.Fragment key={i}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div className={`step-circle${s.state === 'done' ? ' done' : ''}`}
-                style={{ width: 30, height: 30, fontSize: 12, ...(s.state === 'active' ? { borderColor: 'var(--orange)', color: 'var(--orange)', fontWeight: 700 } : {}) }}>
-                {s.state === 'done' ? '✓' : i + 1}
-              </div>
-              <span style={{ fontSize: 13, ...(s.state === 'pending' ? { color: 'var(--muted)' } : {}), ...(s.state === 'active' ? { fontWeight: 600 } : {}) }}>{s.label}</span>
-            </div>
-            {i < arr.length - 1 && <div style={{ width: 24, borderTop: '1.5px dashed var(--line)' }}/>}
-          </React.Fragment>
-        ))}
-      </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 28, flexWrap: 'wrap' }}>
+      {[
+        { label: '요금제 선택', state: 'done' },
+        { label: '결제 수단 선택', state: 'active' },
+        { label: '결제 인증', state: 'pending' },
+        { label: 'API Key 발급', state: 'pending' },
+      ].map((s, i, arr) => (
+        <React.Fragment key={i}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <StepCircle state={s.state} index={i + 1} />
+            <span style={{
+              fontSize: 13,
+              fontWeight: s.state === 'active' ? 600 : 400,
+              color: s.state === 'pending' ? 'var(--muted)' : 'var(--ink)',
+            }}>{s.label}</span>
+          </div>
+          {i < arr.length - 1 && <div style={{ width: 24, borderTop: '1.5px dashed var(--line)' }}/>}
+        </React.Fragment>
+      ))}
+    </div>
 
       {!success && (
         <div>

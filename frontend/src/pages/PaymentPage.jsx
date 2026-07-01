@@ -1,4 +1,66 @@
+// PaymentPage.jsx
+
+
 import React, { useState } from 'react';
+
+/* ── 스텝 인디케이터 원형 배지 ── */
+function StepCircle({ state, index }) {
+  // state: 'done' | 'active' | 'pending'
+  const base = {
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 13,
+    fontWeight: 700,
+    flexShrink: 0,
+    transition: 'all .2s',
+    boxSizing: 'border-box',
+  };
+
+  if (state === 'done') {
+    return (
+      <div style={{
+        ...base,
+        background: 'linear-gradient(135deg, var(--orange), var(--gold))',
+        color: '#fff',
+        border: 'none',
+        boxShadow: '0 2px 6px rgba(240,105,30,.35)',
+      }}>
+        <svg viewBox="0 0 24 24" fill="none" width={15} height={15}>
+          <path d="M5 12.5 9.5 17 19 7" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+    );
+  }
+
+  if (state === 'active') {
+    return (
+      <div style={{
+        ...base,
+        background: '#fff',
+        color: 'var(--orange)',
+        border: '2px solid var(--orange)',
+        boxShadow: '0 0 0 4px rgba(240,105,30,.12)',
+      }}>
+        {index}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      ...base,
+      background: 'var(--paper)',
+      color: 'var(--muted)',
+      border: '1.5px solid var(--line)',
+    }}>
+      {index}
+    </div>
+  );
+}
 
 export default function PaymentPage({ closePage }) {
   const [method, setMethod] = useState('kakao');
@@ -25,25 +87,26 @@ export default function PaymentPage({ closePage }) {
       <p className="pg-sub">CAPTCHA 통과 토큰 검증 후 결제 요청 단계입니다.</p>
 
       {/* Step indicators */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28, flexWrap: 'wrap' }}>
-        {[
-          { label: 'CAPTCHA 통과', done: true },
-          { label: '좌석/주문 확정', done: true },
-          { label: '결제 인증', active: true },
-          { label: '서버 승인' },
-        ].map((s, i, arr) => (
-          <React.Fragment key={i}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div className={`step-circle${s.done ? ' done' : ''}`}
-                style={{ width: 32, height: 32, fontSize: 13, ...(s.active ? { borderColor: 'var(--orange)', color: 'var(--orange)', fontWeight: 700 } : {}) }}>
-                {s.done ? '✓' : i + 1}
-              </div>
-              <span style={{ fontSize: 13, ...(s.active ? { fontWeight: 600 } : {}), ...(!s.done && !s.active ? { color: 'var(--muted)' } : {}) }}>{s.label}</span>
-            </div>
-            {i < arr.length - 1 && <div style={{ width: 28, borderTop: '1.5px dashed var(--line)' }}/>}
-          </React.Fragment>
-        ))}
-      </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 28, flexWrap: 'wrap' }}>
+      {[
+        { label: 'CAPTCHA 통과', state: 'done' },
+        { label: '좌석/주문 확정', state: 'done' },
+        { label: '결제 인증', state: 'active' },
+        { label: '서버 승인', state: 'pending' },
+      ].map((s, i, arr) => (
+        <React.Fragment key={i}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <StepCircle state={s.state} index={i + 1} />
+            <span style={{
+              fontSize: 13,
+              fontWeight: s.state === 'active' ? 600 : 400,
+              color: s.state === 'pending' ? 'var(--muted)' : 'var(--ink)',
+            }}>{s.label}</span>
+          </div>
+          {i < arr.length - 1 && <div style={{ width: 28, borderTop: '1.5px dashed var(--line)' }}/>}
+        </React.Fragment>
+      ))}
+    </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
         {/* Order info */}

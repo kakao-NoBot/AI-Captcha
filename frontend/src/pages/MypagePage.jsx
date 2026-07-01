@@ -1,3 +1,5 @@
+// MypagePage.jsx
+
 import React, { useState, useEffect } from 'react';
 
 const realKey = 'sk-aicap_prod_7f3a91b2c4d5e6f789012345xxxx';
@@ -221,15 +223,94 @@ function UsageTab() {
   );
 }
 
+/* ── 탈퇴 확인 모달 (작은 사이즈) ── */
+function ConfirmDeactivateModal({ onConfirm, onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(36,27,21,.45)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', padding: 24,
+    }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div style={{
+        background: '#fff', borderRadius: 'var(--r)', padding: '28px 24px',
+        width: '100%', maxWidth: 320, boxShadow: 'var(--shadow-md)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: '50%',
+          background: '#c0392b', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg viewBox="0 0 24 24" fill="none" width={22} height={22}>
+            <path d="M12 8v5M12 16.5h.01" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
+            <path d="M10.3 3.9 2.6 17.5A1.6 1.6 0 0 0 4 20h16a1.6 1.6 0 0 0 1.4-2.5L13.7 3.9a1.6 1.6 0 0 0-2.8 0Z" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <strong style={{ display: 'block', fontSize: 16, marginBottom: 4 }}>정말로 탈퇴하시겠어요?</strong>
+          <span style={{ fontSize: 13, color: 'var(--muted)' }}>이 작업은 되돌릴 수 없습니다.</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8, width: '100%', marginTop: 4 }}>
+          <button className="pg-btn" style={{ flex: 1, padding: 11 }} onClick={onClose}>취소</button>
+          <button className="pg-btn danger" style={{ flex: 1, padding: 11 }} onClick={onConfirm}>확인</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── 탈퇴 완료 모달 (작은 사이즈) ── */
+function DeactivateDoneModal({ onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(36,27,21,.45)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', padding: 24,
+    }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div style={{
+        background: '#fff', borderRadius: 'var(--r)', padding: '28px 24px',
+        width: '100%', maxWidth: 320, boxShadow: 'var(--shadow-md)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: 48, height: 48, borderRadius: '50%',
+          background: 'var(--ok)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg viewBox="0 0 34 34" fill="none" width={22} height={22}>
+            <path d="M7 17.5 13.5 24 27 10" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <strong style={{ display: 'block', fontSize: 16 }}>탈퇴가 완료되었습니다</strong>
+        </div>
+        <button className="pg-btn primary" style={{ width: '100%', padding: 11 }} onClick={onClose}>확인</button>
+      </div>
+    </div>
+  );
+}
+
 /* ── SC-17 계정 탈퇴 탭 (탈퇴사유 제거) ── */
 function DeactivateTab({ closePage }) {
   const [agreed, setAgreed] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showDone, setShowDone] = useState(false);
+
   const confirm_ = () => {
     if (!agreed) { alert('탈퇴 동의 체크박스를 선택해주세요.'); return; }
-    if (window.confirm('정말로 탈퇴하시겠어요? 이 작업은 되돌릴 수 없습니다.')) {
-      closePage();
-      alert('탈퇴가 완료되었습니다.');
-    }
+    setShowConfirm(true);
+  };
+
+  const doDeactivate = () => {
+    setShowConfirm(false);
+    setShowDone(true);
+  };
+
+  const finishClose = () => {
+    setShowDone(false);
+    closePage();
   };
 
   return (
@@ -253,6 +334,16 @@ function DeactivateTab({ closePage }) {
           <button className="pg-btn danger" onClick={confirm_}>탈퇴하기</button>
         </div>
       </div>
+
+      {showConfirm && (
+        <ConfirmDeactivateModal
+          onConfirm={doDeactivate}
+          onClose={() => setShowConfirm(false)}
+        />
+      )}
+      {showDone && (
+        <DeactivateDoneModal onClose={finishClose} />
+      )}
     </>
   );
 }
