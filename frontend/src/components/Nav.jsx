@@ -21,9 +21,8 @@ export default function Nav({ openPage }) {
           <div className="nav-links">
             <a href="#compare">차별성</a>
             <a href="#metrics">성능</a>
-            <a href="#flow">동작 과정</a>
+            <a href="#flow">검증 절차</a>
             <a href="#cases">사용 사례</a>
-            <a href="#pricing">가격</a>
             <a href="#guide" onClick={e => { e.preventDefault(); document.getElementById('guide')?.scrollIntoView({ behavior: 'smooth' }); }}>가이드</a>
             <a href="#" onClick={e => { e.preventDefault(); openPage('board'); }}>공지/FAQ</a>
           </div>

@@ -134,7 +134,7 @@ export default function LoginPage({ openPage, closePage }) {
             계정이 없으신가요?
             <button onClick={() => openPage('signup')}
               style={{ background: 'none', border: 'none', color: 'var(--orange)', fontWeight: 700, fontSize: 14, cursor: 'pointer', padding: 0, marginLeft: 4 }}>
-              회원가입 →
+              회원가입
             </button>
           </div>
         </div>

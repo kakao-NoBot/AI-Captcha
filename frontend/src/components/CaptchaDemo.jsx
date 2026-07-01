@@ -51,33 +51,65 @@ function shuffle(arr) {
 }
 
 /* ══════════════════════════════════════
+   공통 결과 화면
+══════════════════════════════════════ */
+function SuccessScreen({ onReset }) {
+  return (
+    <div className="demo-body demo-success-body">
+      <div className="demo-check-circle">
+        <svg viewBox="0 0 34 34" fill="none" width={36} height={36}>
+          <path d="M7 17.5 13.5 24 27 10" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+      <div className="demo-success-msg">
+        <strong>검증 성공!</strong>
+        <span>사람으로 확인되었습니다</span>
+      </div>
+      <button className="demo-retry-btn" onClick={onReset}>다시 체험하기</button>
+    </div>
+  );
+}
+
+function FailScreen({ onReset }) {
+  return (
+    <div className="demo-body demo-success-body">
+      <div className="demo-fail-circle">
+        <svg viewBox="0 0 34 34" fill="none" width={36} height={36}>
+          <path d="M10 10 24 24M24 10 10 24" stroke="#fff" strokeWidth="3.5" strokeLinecap="round"/>
+        </svg>
+      </div>
+      <div className="demo-success-msg">
+        <strong>검증 실패</strong>
+        <span>정답이 아닙니다. 다시 시도해 보세요.</span>
+      </div>
+      <button className="demo-retry-btn" onClick={onReset}>다시 체험하기</button>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
    4지선다 클릭 CAPTCHA
 ══════════════════════════════════════ */
 function ClickCaptcha() {
   const [tiles, setTiles] = useState(() => shuffle(POOL));
-  const [selected, setSelected] = useState(null);
-  const [result, setResult] = useState(null); // null | 'ok' | 'bad'
-  const [token, setToken] = useState('');
+  const [screen, setScreen] = useState(null); // null | 'success' | 'fail'
 
   const reset = () => {
     setTiles(shuffle(POOL));
-    setSelected(null);
-    setResult(null);
-    setToken('');
+    setScreen(null);
   };
 
   const pick = (tile) => {
-    if (result === 'ok') return;
-    setSelected(tile.key);
+    if (screen) return;
     if (tile.correct) {
-      const tok = 'aicap_' + Math.random().toString(36).slice(2, 8).toUpperCase();
-      setToken(tok);
-      setResult('ok');
+      setScreen('success');
     } else {
-      setResult('bad');
-      setTimeout(() => { setSelected(null); setResult(null); }, 900);
+      setScreen('fail');
     }
   };
+
+  if (screen === 'success') return <SuccessScreen onReset={reset} />;
+  if (screen === 'fail')    return <FailScreen onReset={reset} />;
 
   return (
     <div className="demo-body">
@@ -93,12 +125,10 @@ function ClickCaptcha() {
         {tiles.map(tile => (
           <button
             key={tile.key}
-            className={`tile${selected === tile.key ? ' sel' : ''}`}
+            className="tile"
             type="button"
             aria-label={tile.name + ' 선택'}
-            disabled={result === 'ok'}
             onClick={() => pick(tile)}
-            style={result === 'bad' && selected === tile.key ? { borderColor: 'var(--bad)', boxShadow: '0 0 0 3px rgba(216,73,47,.18)' } : {}}
           >
             {GLYPHS[tile.key]}
             <span className="cap">{tile.name}</span>
@@ -107,13 +137,7 @@ function ClickCaptcha() {
       </div>
 
       <div className="demo-foot">
-        <div className={`status${result === 'ok' ? ' ok' : result === 'bad' ? ' bad' : ''}`}>
-          {result === 'ok'
-            ? <>검증 성공 · 클릭 위치 정상 <span className="token">{token}</span></>
-            : result === 'bad'
-            ? '바나나가 아니에요. 다시 선택하세요.'
-            : '보기 중 정답을 클릭하세요.'}
-        </div>
+        <div className="status">보기 중 정답을 클릭하세요.</div>
         <button className="reset" onClick={reset}>새로운 문제</button>
       </div>
     </div>
@@ -129,8 +153,8 @@ function DragCaptcha() {
   const [solved, setSolved] = useState(false);
   const [dropState, setDropState] = useState('idle');
   const [status, setStatus] = useState({ msg: '타일을 끌어다 놓거나, 클릭해서 선택하세요.', cls: '' });
-  const [token, setToken] = useState('');
   const [ghost, setGhost] = useState(null);
+  const [screen, setScreen] = useState(null); // null | 'success' | 'fail'
 
   const selectedRef = useRef(null);
   const solvedRef = useRef(false);
@@ -143,7 +167,7 @@ function DragCaptcha() {
     setSolved(false);
     setDropState('idle');
     setStatus({ msg: '타일을 끌어다 놓거나, 클릭해서 선택하세요.', cls: '' });
-    setToken('');
+    setScreen(null);
   }, []);
 
   const selectTile = useCallback((key) => {
@@ -159,12 +183,9 @@ function DragCaptcha() {
       setSolved(true);
       solvedRef.current = true;
       setDropState('done');
-      const tok = 'aicap_' + Math.random().toString(36).slice(2, 8).toUpperCase();
-      setToken(tok);
-      setStatus({ msg: '검증 성공 · 행동 신호 정상', cls: 'ok', tok });
+      setScreen('success');
     } else {
-      setStatus({ msg: '바나나가 아니에요. 다시 시도해 주세요.', cls: 'bad' });
-      setSelected(null);
+      setScreen('fail');
     }
   }, []);
 
@@ -198,6 +219,9 @@ function DragCaptcha() {
   }, [selectTile, submit]);
 
   const dropClass = `drop${dropState === 'hot' ? ' hot' : ''}${dropState === 'done' ? ' done' : ''}`;
+
+  if (screen === 'success') return <SuccessScreen onReset={reset} />;
+  if (screen === 'fail')    return <FailScreen onReset={reset} />;
 
   return (
     <div className="demo-body">
@@ -241,10 +265,7 @@ function DragCaptcha() {
       </div>
 
       <div className="demo-foot">
-        <div className={`status${status.cls ? ' ' + status.cls : ''}`}>
-          {status.msg}
-          {status.tok && <span className="token">{status.tok}</span>}
-        </div>
+        <div className={`status${status.cls ? ' ' + status.cls : ''}`}>{status.msg}</div>
         <button className="reset" onClick={reset}>새로운 문제</button>
       </div>
 

@@ -116,7 +116,7 @@ export default function App() {
       {/* Signup */}
       <div className={`page-overlay${page === 'signup' ? ' active' : ''}`}>
         <div className="po-nav">
-          <button className="po-back" onClick={() => openPage('login')}>← 로그인으로</button>
+          <button className="po-back" onClick={() => openPage('login')}>로그인으로</button>
           <span className="po-title" dangerouslySetInnerHTML={{ __html: 'AI<b style="color:var(--orange)">CAPTCHA</b>' }}/>
         </div>
         <SignupPage openPage={openPage} />

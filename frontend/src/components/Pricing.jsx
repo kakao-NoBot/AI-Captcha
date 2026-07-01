@@ -25,7 +25,7 @@ const plans = [
       { ok: true,  text: '이메일 우선 지원' },
       { ok: false, text: 'SLA 99.9% 보장' },
     ],
-    btnLabel: '결제하고 시작하기 →', btnClass: 'pg-btn primary',
+    btnLabel: '결제하고 시작하기', btnClass: 'pg-btn primary',
   },
   {
     tier: 'Enterprise', price: '문의', period: '/월', desc: '무제한 호출 · 커스텀 SLA', featured: false,

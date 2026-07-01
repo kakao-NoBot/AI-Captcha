@@ -196,7 +196,7 @@ export default function PlanPayPage({ planName = 'Pro', closePage, openPage, ope
               <p>신청을 완료하고 API Key를 발급받으세요.</p>
               <div className="pp-action-row" style={{ marginTop: 24 }}>
                 <button className="pg-btn" onClick={closePage}>홈으로</button>
-                <button className="pg-btn primary" onClick={openMypageOnApiKey}>신청 및 API Key 발급 →</button>
+                <button className="pg-btn primary" onClick={openMypageOnApiKey}>신청 및 API Key 발급</button>
               </div>
             </>
           ) : (
@@ -211,7 +211,7 @@ export default function PlanPayPage({ planName = 'Pro', closePage, openPage, ope
               <p className="pp-warn">⚠ Secret Key는 이 화면에서만 1회 표시됩니다. 반드시 저장해두세요.</p>
               <div className="pp-action-row">
                 <button className="pg-btn" onClick={closePage}>홈으로</button>
-                <button className="pg-btn primary" onClick={openMypageOnApiKey}>마이페이지 →</button>
+                <button className="pg-btn primary" onClick={openMypageOnApiKey}>마이페이지</button>
               </div>
             </>
           )}
