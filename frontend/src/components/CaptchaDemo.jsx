@@ -1,6 +1,8 @@
 // CaptchaDemo.jsx
 
 import React, { useState, useCallback, useRef } from 'react';
+import cap1Question from '../assets/cap1_Question.png';
+import bananaAscii from '../assets/banana_ascii.jpg';
 
 /* ── SVG Glyphs ── */
 const GLYPHS = {
@@ -49,9 +51,9 @@ function shuffle(arr) {
 }
 
 /* ══════════════════════════════════════
-   유형 1 — 4지선다 클릭
+   4지선다 클릭 CAPTCHA
 ══════════════════════════════════════ */
-function CaptchaType1() {
+function ClickCaptcha() {
   const [tiles, setTiles] = useState(() => shuffle(POOL));
   const [selected, setSelected] = useState(null);
   const [result, setResult] = useState(null); // null | 'ok' | 'bad'
@@ -80,10 +82,14 @@ function CaptchaType1() {
   return (
     <div className="demo-body">
       <div className="demo-q">
-        <span>아래 4개 중 <b style={{ color: 'var(--orange)' }}>바나나</b>를 클릭하세요</span>
+        <span>아래 <b style={{ color: 'var(--orange)' }}>이미지</b>에 해당하는 보기를 선택해 주세요</span>
       </div>
 
-      <div className="tiles" style={{ marginTop: 16 }}>
+      <div className="captcha-reference">
+        <img src={bananaAscii} alt="바나나 ASCII 아트" />
+      </div>
+
+      <div className="tiles choice-tiles">
         {tiles.map(tile => (
           <button
             key={tile.key}
@@ -115,9 +121,9 @@ function CaptchaType1() {
 }
 
 /* ══════════════════════════════════════
-   유형 2 — 드래그-투-타깃
+   드래그-투-타깃 CAPTCHA
 ══════════════════════════════════════ */
-function CaptchaType2() {
+function DragCaptcha() {
   const [tiles, setTiles] = useState(() => shuffle(POOL));
   const [selected, setSelected] = useState(null);
   const [solved, setSolved] = useState(false);
@@ -168,7 +174,7 @@ function CaptchaType2() {
     setGhost({ key, x: e.clientX, y: e.clientY });
     const onMove = (ev) => {
       setGhost({ key, x: ev.clientX, y: ev.clientY });
-      const drop = document.getElementById('captcha-drop-t2');
+      const drop = document.getElementById('captcha-drop-drag');
       if (drop) {
         const r = drop.getBoundingClientRect();
         const isOver = ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom;
@@ -178,7 +184,7 @@ function CaptchaType2() {
     const onUp = (ev) => {
       window.removeEventListener('pointermove', onMove);
       setGhost(null);
-      const drop = document.getElementById('captcha-drop-t2');
+      const drop = document.getElementById('captcha-drop-drag');
       if (drop) {
         const r = drop.getBoundingClientRect();
         const isOver = ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom;
@@ -196,8 +202,12 @@ function CaptchaType2() {
   return (
     <div className="demo-body">
       <div className="demo-q">
-        <span><b style={{ color: 'var(--orange)' }}>바나나</b>를 장바구니로 드래그하세요</span>
-        <span className="drag-ic">DRAG →</span>
+        <img
+          className="question-image"
+          src={cap1Question}
+          alt="바나나를 장바구니로 드래그하세요"
+        />
+
       </div>
 
       <div className="tiles">
@@ -216,7 +226,7 @@ function CaptchaType2() {
         ))}
       </div>
 
-      <div className={dropClass} id="captcha-drop-t2" onClick={() => { if (selected && !solved) submit(selected); }}>
+      <div className={dropClass} id="captcha-drop-drag" onClick={() => { if (selected && !solved) submit(selected); }}>
         <div className="cart">
           <svg viewBox="0 0 24 24" fill="none" stroke="#F0691E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/>
@@ -280,10 +290,10 @@ export default function CaptchaDemo() {
             </button>
           ))}
         </div>
-        <span className="tag">{type === 1 ? 'Live demo · 유형 1 선택' : 'Live demo · 유형 2 드래그'}</span>
+        <span className="tag">{type === 1 ? 'Live demo · 유형 1 드래그' : 'Live demo · 유형 2 선택'}</span>
       </div>
 
-      {type === 1 ? <CaptchaType1 /> : <CaptchaType2 />}
+      {type === 1 ? <DragCaptcha /> : <ClickCaptcha />}
     </div>
   );
 }

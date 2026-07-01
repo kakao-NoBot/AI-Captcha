@@ -172,16 +172,31 @@ h1 .hl::after {
 }
 .demo-body { padding: 20px; }
 .demo-q {
-  display: flex; align-items: center; gap: 10px;
+  position: relative; display: flex; align-items: center; justify-content: center; gap: 10px;
   background: var(--peach); border: 1px dashed var(--peach-deep); border-radius: 14px;
   padding: 14px 16px; font-weight: 700; font-size: 18px; letter-spacing: -.02em;
 }
+.demo-q .question-image {
+  display: block; flex: 0 1 auto; width: min(680px, calc(100% - 100px)); min-width: 0; height: auto;
+}
 .demo-q .drag-ic {
+  position: absolute; right: 16px;
   font-size: 13px; color: var(--orange); font-weight: 600; font-family: var(--disp);
   letter-spacing: .08em; background: #fff; border: 1px solid var(--line);
-  padding: 3px 9px; border-radius: 999px; margin-left: auto; white-space: nowrap;
+  padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+}
+.captcha-reference {
+  display: flex; justify-content: center; margin-top: 16px;
+}
+.captcha-reference img {
+  display: block; width: 420px; max-width: 85%; height: auto;
+  border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-sm);
 }
 .tiles { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 16px; }
+.tiles.choice-tiles { max-width: 650px; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px auto 0; }
+.choice-tiles .tile {
+  min-height: 80px; aspect-ratio: auto;
+}
 .tile {
   position: relative; aspect-ratio: 0.82; border: 1.5px solid var(--line); border-radius: 14px;
   background: #fff; cursor: grab; display: flex; flex-direction: column; align-items: center;
