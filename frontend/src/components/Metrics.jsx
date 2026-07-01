@@ -10,14 +10,14 @@ export default function Metrics() {
   return (
     <section className="band" id="metrics">
       <div className="wrap">
-        <div className="sec-head">
+        <div className="sec-head" data-reveal>
           <span className="eyebrow">Performance</span>
           <h2>측정으로 증명하는 성능</h2>
           <p>학습·발표 단계의 목표 지표입니다. 실제 수치는 모델 학습 후 갱신됩니다.</p>
         </div>
         <div className="metrics">
           {metricsData.map((m, i) => (
-            <div className="metric" key={i}>
+            <div className="metric" key={i} data-reveal style={{ transitionDelay: `${i * 130}ms` }}>
               <div className="big">{m.value}<span className="u">{m.unit}</span></div>
               <div className="cap">{m.cap}</div>
               <div className="desc">{m.desc}</div>

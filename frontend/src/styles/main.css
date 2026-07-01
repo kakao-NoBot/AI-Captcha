@@ -410,6 +410,22 @@ footer { padding: 54px 0 40px; border-top: 1px solid var(--line); background: va
   * { animation: none !important; transition: none !important; scroll-behavior: auto; }
 }
 
+/* ── Scroll Reveal ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity   0.75s cubic-bezier(0.25, 0.10, 0.25, 1.00),
+    transform 0.75s cubic-bezier(0.25, 0.10, 0.25, 1.00);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
+
 /* PAGE OVERLAY SYSTEM */
 .page-overlay {
   display: none; position: fixed; inset: 0; z-index: 200;

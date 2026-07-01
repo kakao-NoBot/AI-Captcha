@@ -13,14 +13,14 @@ export default function Cases() {
   return (
     <section className="band" id="cases">
       <div className="wrap">
-        <div className="sec-head">
+        <div className="sec-head" data-reveal>
           <span className="eyebrow">Use Cases</span>
           <h2>어디서 쓰이나요</h2>
           <p>티켓팅, 한정판 쇼핑, 회원가입, 선착순 이벤트 등 봇 차단이 필요한 모든 곳에 적용됩니다.</p>
         </div>
         <div className="cases-grid">
           {cases.map((c, i) => (
-            <div className="case-card" key={i}>
+            <div className="case-card" key={i} data-reveal style={{ transitionDelay: `${i * 100}ms` }}>
               <div className="case-icon">{c.icon}</div>
               <h3>{c.title}</h3>
               <p>{c.desc}</p>

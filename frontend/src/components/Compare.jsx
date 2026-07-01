@@ -4,13 +4,13 @@ export default function Compare() {
   return (
     <section className="band tint" id="compare">
       <div className="wrap">
-        <div className="sec-head">
+        <div className="sec-head" data-reveal>
           <span className="eyebrow">Why AICAPTCHA</span>
           <h2>기존 캡차와 무엇이 다른가</h2>
           <p>왜곡 텍스트나 단순 이미지 선택은 봇에게 이미 뚫렸습니다. 우리는 인식·배치·행동을 한 번에 검증합니다.</p>
         </div>
         <div className="compare">
-          <div className="cmp old">
+          <div className="cmp old" data-reveal style={{ transitionDelay: '100ms' }}>
             <h3>기존 CAPTCHA</h3>
             <div className="sub">왜곡 텍스트 · 단순 이미지 선택</div>
             <ul>
@@ -20,7 +20,7 @@ export default function Compare() {
               <li><span className="ico">✕</span> 매크로의 대량 시도를 막지 못함</li>
             </ul>
           </div>
-          <div className="cmp new">
+          <div className="cmp new" data-reveal style={{ transitionDelay: '220ms' }}>
             <h3>AICAPTCHA <span className="pill">Ours</span></h3>
             <div className="sub">아스키 타일 드래그-투-타깃</div>
             <ul>

@@ -12,14 +12,14 @@ export default function Flow() {
   return (
     <section className="band tint" id="flow">
       <div className="wrap">
-        <div className="sec-head">
+        <div className="sec-head" data-reveal>
           <span className="eyebrow">How it works</span>
           <h2>세 단계로 끝나는 검증</h2>
           <p>발급부터 토큰 반환까지, 사이트에 위젯 한 줄을 붙이는 것으로 시작됩니다.</p>
         </div>
         <div className="flow">
           {steps.map((s, i) => (
-            <div className="step" key={i}>
+            <div className="step" key={i} data-reveal style={{ transitionDelay: `${i * 130}ms` }}>
               <h3>{s.title}</h3>
               <p>{s.desc}</p>
             </div>

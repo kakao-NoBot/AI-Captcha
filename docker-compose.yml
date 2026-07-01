@@ -52,9 +52,12 @@ services:
     container_name: captcha-frontend
     ports:
       - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - backend
-    restart: always
+    restart: unless-stopped
 
 volumes:
   captcha_mysql_data:

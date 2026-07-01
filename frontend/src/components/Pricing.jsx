@@ -45,14 +45,14 @@ export default function Pricing({ openPage, openPlanPayment }) {
   return (
     <section className="band tint" id="pricing">
       <div className="wrap">
-        <div className="sec-head" style={{ maxWidth: '100%', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+        <div className="sec-head" data-reveal style={{ maxWidth: '100%', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
           <span className="eyebrow">Pricing</span>
           <h2>투명한 요금제</h2>
           <p>월 호출 횟수와 기능에 따라 선택하세요. Basic은 영구 무료입니다.</p>
         </div>
         <div className="pricing-grid">
-          {plans.map((plan) => (
-            <div className={`price-card${plan.featured ? ' featured' : ''}`} key={plan.tier}>
+          {plans.map((plan, i) => (
+            <div className={`price-card${plan.featured ? ' featured' : ''}`} key={plan.tier} data-reveal style={{ transitionDelay: `${i * 150}ms` }}>
               {plan.badge && <div className="price-badge">{plan.badge}</div>}
               <div className="price-tier">{plan.tier}</div>
               <div className="price-amount" style={plan.tier === 'Enterprise' ? { fontSize: 28, paddingTop: 4 } : {}}>
