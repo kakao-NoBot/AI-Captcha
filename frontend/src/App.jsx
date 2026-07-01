@@ -108,13 +108,22 @@ export default function App() {
   useEffect(() => {
     const els = document.querySelectorAll('[data-reveal]');
     if (!els.length) return;
+    // data-reveal-delay 속성으로 JS 타이머를 제어해 빠른 스크롤에서도 순차 등장 보장
+    const timers = new Map();
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
+            const delay = parseInt(entry.target.dataset.revealDelay || '0', 10);
+            const id = setTimeout(() => {
+              entry.target.classList.add('is-visible');
+              timers.delete(entry.target);
+            }, delay);
+            timers.set(entry.target, id);
           } else if (entry.boundingClientRect.top > 0) {
-            // 뷰포트 아래에 있을 때(위로 스크롤)만 리셋 → 다시 내릴 때 재생
+            // 뷰포트 아래로 나간 경우(위로 스크롤)만 리셋 → 예약 타이머도 취소
+            clearTimeout(timers.get(entry.target));
+            timers.delete(entry.target);
             entry.target.classList.remove('is-visible');
           }
         });
@@ -122,7 +131,7 @@ export default function App() {
       { threshold: 0.15 }
     );
     els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); timers.forEach(clearTimeout); };
   }, []);
 
   return (

@@ -73,17 +73,17 @@ export default function GuidePage({ openPage }) {
         </div>
 
         <div className="flow" style={{ marginBottom: 48 }}>
-          {STEPS.map(s => {
+          {STEPS.map((s, i) => {
             const isHovered = hovered === s.n;
             return (
               <div
                 className="step"
                 key={s.n}
                 data-reveal
+                data-reveal-delay={i * 200}
                 style={{
                   borderTop: `3px solid ${s.color}`,
-                  // opacity를 포함해 CSS [data-reveal]의 transition을 대체 — hover 효과와 공존
-                  transition: 'opacity 0.75s cubic-bezier(0.25, 0.10, 0.25, 1.00), transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease',
+                  transition: 'opacity 0.6s cubic-bezier(0.25, 0.10, 0.25, 1.00), transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease',
                   transform: isHovered ? 'scale(1.04)' : 'scale(1)',
                   background: isHovered ? s.bg : undefined,
                   boxShadow: isHovered ? s.shadow : undefined,
