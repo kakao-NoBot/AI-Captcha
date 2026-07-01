@@ -66,7 +66,7 @@ export default function GuidePage({ openPage }) {
   return (
     <section className="band" id="guide">
       <div className="wrap">
-        <div className="sec-head">
+        <div className="sec-head" data-reveal>
           <span className="eyebrow">Guide · API 사용법</span>
           <h2>AICAPTCHA 연동 가이드</h2>
           <p>3단계로 봇 차단을 시작하세요. API Key 발급부터 토큰 검증까지 모두 안내합니다.</p>
@@ -79,9 +79,11 @@ export default function GuidePage({ openPage }) {
               <div
                 className="step"
                 key={s.n}
+                data-reveal
                 style={{
                   borderTop: `3px solid ${s.color}`,
-                  transition: 'transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease',
+                  // opacity를 포함해 CSS [data-reveal]의 transition을 대체 — hover 효과와 공존
+                  transition: 'opacity 0.75s cubic-bezier(0.25, 0.10, 0.25, 1.00), transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease',
                   transform: isHovered ? 'scale(1.04)' : 'scale(1)',
                   background: isHovered ? s.bg : undefined,
                   boxShadow: isHovered ? s.shadow : undefined,
@@ -97,17 +99,19 @@ export default function GuidePage({ openPage }) {
           })}
         </div>
 
-        <div style={{ marginBottom: 12, fontWeight: 700, fontSize: 18 }}>API 예제 코드</div>
-        <div className="tab-bar">
-          {['curl', 'python', 'node'].map(t => (
-            <button key={t} className={`tab${codeTab === t ? ' active' : ''}`} onClick={() => setCodeTab(t)}>
-              {t === 'curl' ? 'cURL' : t === 'python' ? 'Python' : 'Node.js'}
-            </button>
-          ))}
+        <div data-reveal style={{ transitionDelay: '100ms' }}>
+          <div style={{ marginBottom: 12, fontWeight: 700, fontSize: 18 }}>API 예제 코드</div>
+          <div className="tab-bar">
+            {['curl', 'python', 'node'].map(t => (
+              <button key={t} className={`tab${codeTab === t ? ' active' : ''}`} onClick={() => setCodeTab(t)}>
+                {t === 'curl' ? 'cURL' : t === 'python' ? 'Python' : 'Node.js'}
+              </button>
+            ))}
+          </div>
+          <pre className="pg-code">{CODE[codeTab]}</pre>
         </div>
-        <pre className="pg-code">{CODE[codeTab]}</pre>
 
-        <div className="case-card" style={{ marginTop: 24, background: 'var(--peach)', border: '1px solid var(--peach-deep)' }}>
+        <div className="case-card" data-reveal style={{ transitionDelay: '200ms', marginTop: 24, background: 'var(--peach)', border: '1px solid var(--peach-deep)' }}>
           <div className="case-icon">📌</div>
           <h3>빠른 연동 — 위젯 한 줄</h3>
           <p>프론트엔드에 스크립트 태그 하나로 위젯을 추가할 수 있습니다.</p>

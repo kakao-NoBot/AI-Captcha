@@ -104,7 +104,7 @@ export default function App() {
     return () => { document.body.style.overflow = ''; };
   }, [page]);
 
-  // 스크롤 진입 시 요소 표시 (IntersectionObserver)
+  // 스크롤 진입 시 요소 표시 (IntersectionObserver) — 반복 재생
   useEffect(() => {
     const els = document.querySelectorAll('[data-reveal]');
     if (!els.length) return;
@@ -113,7 +113,9 @@ export default function App() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
+          } else if (entry.boundingClientRect.top > 0) {
+            // 뷰포트 아래에 있을 때(위로 스크롤)만 리셋 → 다시 내릴 때 재생
+            entry.target.classList.remove('is-visible');
           }
         });
       },
