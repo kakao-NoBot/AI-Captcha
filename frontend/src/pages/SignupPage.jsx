@@ -20,7 +20,7 @@ export default function SignupPage({ openPage }) {
 
   const handleSignup = () => {
     if (!isValid) { setAttempted(true); return; }
-    openPage('apply');
+    openPage('login');   // 'apply' → 'login'으로 변경
   };
 
   return (
