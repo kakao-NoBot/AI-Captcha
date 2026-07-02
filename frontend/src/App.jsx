@@ -81,13 +81,18 @@ export default function App() {
   const [page, setPage] = useState(null);
   const [planPayArgs, setPlanPayArgs] = useState({ plan: 'Pro' });
   const [mypageTab, setMypageTab] = useState('info');
+  const [mypageKey, setMypageKey] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [boardDetailOpen, setBoardDetailOpen] = useState(false);
 
   const openPage = (id) => {
-    if (id === 'board') setBoardDetailOpen(false);
-    setPage(id);
-  };
+  if (id === 'board') setBoardDetailOpen(false);
+  if (id === 'mypage') {
+    setMypageTab('info');
+    setMypageKey(k => k + 1);
+  }
+  setPage(id);
+};
   const closePage = () => {
     setBoardDetailOpen(false);
     setPage(null);
@@ -101,9 +106,10 @@ export default function App() {
   };
 
   const openMypageOnApiKey = () => {
-    setMypageTab('apikey');
-    setPage('mypage');
-  };
+  setMypageTab('apikey');
+  setMypageKey(k => k + 1);
+  setPage('mypage');
+};
 
   // 오버레이가 열려 있을 때 최상위 스크롤까지 잠가 배경 페이지 노출 방지
   useEffect(() => {
@@ -203,7 +209,7 @@ export default function App() {
           </div>
         </div>
         <div className="po-body">
-          <MypagePage openPage={openPage} closePage={closePage} initialTab={mypageTab} />
+          <MypagePage key={mypageKey} openPage={openPage} closePage={closePage} initialTab={mypageTab} />
         </div>
       </div>
 
