@@ -64,11 +64,15 @@ function BoardDetail({ post, previousPost, nextPost, onBack, onSelectPost }) {
         <h1>{post.title}</h1>
         <div className="board-detail-meta">
           <div>
-            <span>작성자 <b>AICAPTCHA 운영팀</b></span>
+            <span>등록일 <time dateTime={post.date}>{post.date.replaceAll('-', '.')}</time></span>
             <i aria-hidden="true" />
             <span>조회 {120 + post.id * 17}</span>
+            <i aria-hidden="true" />
+            <span>작성자 <b>AICAPTCHA 운영팀</b></span>
           </div>
-          <time dateTime={post.date}>{post.date.replaceAll('-', '.')}</time>
+        </div>
+        <div className="board-detail-actions">
+          <button type="button" className="board-detail-list" onClick={onBack}>목록</button>
         </div>
       </header>
 
@@ -79,17 +83,11 @@ function BoardDetail({ post, previousPost, nextPost, onBack, onSelectPost }) {
       <nav className="board-detail-neighbors" aria-label="이전 및 다음 게시글">
         <button type="button" disabled={!previousPost} onClick={() => previousPost && onSelectPost(previousPost)}>
           <span>‹ 이전 글</span>
-          <b>{previousPost?.title || '이전 글이 없습니다.'}</b>
         </button>
         <button type="button" className="next" disabled={!nextPost} onClick={() => nextPost && onSelectPost(nextPost)}>
           <span>다음 글 ›</span>
-          <b>{nextPost?.title || '다음 글이 없습니다.'}</b>
         </button>
       </nav>
-
-      <div className="board-detail-actions">
-        <button type="button" className="pg-btn" onClick={onBack}>목록으로</button>
-      </div>
     </article>
   );
 }
@@ -124,22 +122,24 @@ function BoardHeader({ onHome, openPage, isLoggedIn, onLogout }) {
 
   return (
     <header className="board-site-header">
-      <div className="board-site-header-inner">
-        <button type="button" className="board-site-brand" onClick={onHome} aria-label="VLUR CAPTCHA 홈">
-          <img src={vlurLogo} alt="VLUR" />
-          <span>VLUR <b>CAPTCHA</b></span>
+      <div className="wrap nav board-site-header-inner">
+        <button type="button" className="brand board-site-brand" onClick={onHome} aria-label="VLUR CAPTCHA 홈">
+          <img src={vlurLogo} alt="VLUR" style={{ height: 36, width: 'auto' }} />
+          <span style={{ fontFamily: 'var(--disp)', fontWeight: 800, fontSize: 16, letterSpacing: '-.01em', color: 'var(--ink)' }}>
+            VLUR <span style={{ color: 'var(--orange)' }}>CAPTCHA</span>
+          </span>
         </button>
 
-        <nav className="board-site-nav" aria-label="게시판 상단 메뉴">
-          <button type="button" onClick={() => goToSection('compare')}>차별성</button>
-          <button type="button" onClick={() => goToSection('metrics')}>성능</button>
-          <button type="button" onClick={() => goToSection('flow')}>검증 절차</button>
-          <button type="button" onClick={() => goToSection('cases')}>사용 사례</button>
-          <button type="button" onClick={() => goToSection('guide')}>가이드</button>
-          <button type="button" className="active">공지/FAQ</button>
-        </nav>
+        <nav className="nav-right" aria-label="게시판 상단 메뉴">
+          <div className="nav-links">
+            <a href="#compare" onClick={(event) => { event.preventDefault(); goToSection('compare'); }}>차별성</a>
+            <a href="#metrics" onClick={(event) => { event.preventDefault(); goToSection('metrics'); }}>성능</a>
+            <a href="#flow" onClick={(event) => { event.preventDefault(); goToSection('flow'); }}>검증 절차</a>
+            <a href="#cases" onClick={(event) => { event.preventDefault(); goToSection('cases'); }}>사용 사례</a>
+            <a href="#guide" onClick={(event) => { event.preventDefault(); goToSection('guide'); }}>가이드</a>
+            <a href="#" className="board-current-link" onClick={(event) => event.preventDefault()}>공지/FAQ</a>
+          </div>
 
-        <div className="board-site-actions">
           {isLoggedIn ? (
             <>
               <a
@@ -161,11 +161,11 @@ function BoardHeader({ onHome, openPage, isLoggedIn, onLogout }) {
             </>
           ) : (
             <>
-              <button type="button" className="board-user-link login" onClick={() => openPage('login')}>로그인</button>
-              <button type="button" className="board-auth-button signup" onClick={() => openPage('signup')}>회원가입</button>
+              <a className="btn btn-ghost" href="#" onClick={(event) => { event.preventDefault(); openPage('login'); }}>로그인</a>
+              <a className="btn btn-primary" href="#" onClick={(event) => { event.preventDefault(); openPage('signup'); }}>회원가입</a>
             </>
           )}
-        </div>
+        </nav>
       </div>
     </header>
   );
@@ -230,10 +230,8 @@ export default function BoardPage({ closePage, openPage, onDetailChange, isLogge
 
   return (
     <div className="po-body">
-      <div className="pg-eyebrow">SC-13 · SC-14</div>
-      <h1 className="pg-h1">커뮤니티 & 리소스</h1>
-      <p className="pg-sub">공지사항, 자주 묻는 질문, 연구 리포트를 확인하세요.</p>
-
+      <h1 className="pg-h1">공지사항</h1>
+      
       <div className="tab-bar">
         {BOARD_TABS.map(([id, label]) => (
           <button key={id} className={`tab${tab === id ? ' active' : ''}`} onClick={() => changeTab(id)}>{label}</button>
@@ -273,7 +271,12 @@ export default function BoardPage({ closePage, openPage, onDetailChange, isLogge
               ))}
             </tbody>
           </table>
-          <Pagination total={NOTICES.length} page={noticePage} pageSize={PAGE_SIZE} onChange={setNoticePage} />
+          <div className="board-list-footer">
+            <div className="board-list-pagination">
+              <Pagination total={NOTICES.length} page={noticePage} pageSize={PAGE_SIZE} onChange={setNoticePage} />
+            </div>
+            <button type="button" className="pg-btn primary board-write-button">글쓰기</button>
+          </div>
         </>
       )}
 
