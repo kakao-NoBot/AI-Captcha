@@ -160,6 +160,14 @@ function EditInfoModal({ onClose }) {
 /* ── SC-07 내 정보 탭 ── */
 function InfoTab() {
   const [modal, setModal] = useState(null); // null | 'pw' | 'edit'
+
+  const readOnlyInputStyle = {
+    background: 'var(--paper)',
+    cursor: 'default',
+    caretColor: 'transparent',
+  };
+  const preventFocus = (e) => e.target.blur();
+
   return (
     <>
       <div className="pg-label">사용자 정보</div>
@@ -167,19 +175,43 @@ function InfoTab() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 420 }}>
         <div>
           <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 6 }}>이름</div>
-          <input className="pg-input" defaultValue="홍길동" readOnly style={{ background: 'var(--paper)' }}/>
+          <input
+            className="pg-input"
+            defaultValue="홍길동"
+            readOnly
+            style={readOnlyInputStyle}
+            onFocus={preventFocus}
+          />
         </div>
         <div>
           <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 6 }}>이메일</div>
-          <input className="pg-input" defaultValue="user@example.com" readOnly style={{ background: 'var(--paper)' }}/>
+          <input
+            className="pg-input"
+            defaultValue="user@example.com"
+            readOnly
+            style={readOnlyInputStyle}
+            onFocus={preventFocus}
+          />
         </div>
         <div>
           <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 6 }}>요금제</div>
-          <input className="pg-input" defaultValue="Pro" readOnly style={{ background: 'var(--paper)' }}/>
+          <input
+            className="pg-input"
+            defaultValue="Pro"
+            readOnly
+            style={readOnlyInputStyle}
+            onFocus={preventFocus}
+          />
         </div>
         <div>
           <div style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 6 }}>가입일</div>
-          <input className="pg-input" defaultValue="2026-01-01" readOnly style={{ background: 'var(--paper)' }}/>
+          <input
+            className="pg-input"
+            defaultValue="2026-01-01"
+            readOnly
+            style={readOnlyInputStyle}
+            onFocus={preventFocus}
+          />
         </div>
         <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
           <button className="pg-btn" onClick={() => setModal('pw')}>비밀번호 변경</button>
