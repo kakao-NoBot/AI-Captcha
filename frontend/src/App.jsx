@@ -40,9 +40,9 @@ const PAGE_TITLES = {
 
 function BrandLogo() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <img src={vlurLogo} alt="VLUR" style={{ height: 32, width: 'auto' }} />
-      <span style={{ fontFamily: 'var(--disp)', fontWeight: 800, fontSize: 15, letterSpacing: '-.01em', color: 'var(--ink)' }}>
+    <div className="brand">
+      <img src={vlurLogo} alt="VLUR" style={{ height: 36, width: 'auto' }} />
+      <span style={{ fontFamily: 'var(--disp)', fontWeight: 800, fontSize: 16, letterSpacing: '-.01em', color: 'var(--ink)' }}>
         VLUR <span style={{ color: 'var(--orange)' }}>CAPTCHA</span>
       </span>
     </div>
@@ -67,9 +67,10 @@ function PageOverlay({ id, activePage, title, onBack, extra, children }) {
 
   return (
     <div className={`page-overlay${isActive ? ' active' : ''}`}>
-      <div className="po-nav">
-        <HomeButton onClick={onBack} />
-        <BrandLogo />
+      <div className="po-nav login-po-nav">
+        <button type="button" className="po-brand-link" onClick={onBack} aria-label="메인 페이지로 이동">
+          <BrandLogo />
+        </button>
         {extra}
       </div>
       {children}
@@ -185,9 +186,10 @@ export default function App() {
 
       {/* Signup */}
       <div className={`page-overlay${page === 'signup' ? ' active' : ''}`}>
-        <div className="po-nav">
-          <HomeButton onClick={closePage} />
-          <BrandLogo />
+        <div className="po-nav signup-po-nav">
+          <button type="button" className="po-brand-link" onClick={closePage} aria-label="메인 페이지로 이동">
+            <BrandLogo />
+          </button>
         </div>
         <SignupPage openPage={openPage} />
       </div>
@@ -221,8 +223,9 @@ export default function App() {
       <div className={`page-overlay${page === 'board' ? ' active' : ''}`}>
         {!boardDetailOpen && (
           <div className="po-nav">
-            <HomeButton onClick={closePage} />
-            <BrandLogo />
+            <button type="button" className="po-brand-link" onClick={closePage} aria-label="메인 페이지로 이동">
+              <BrandLogo />
+            </button>
           </div>
         )}
         <BoardPage
