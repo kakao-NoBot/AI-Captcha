@@ -105,10 +105,28 @@ export default function App() {
     setPage('mypage');
   };
 
-  // 오버레이가 열려 있을 때 배경(body) 스크롤바를 숨겨 이중 스크롤바 방지
+  // 오버레이가 열려 있을 때 최상위 스크롤까지 잠가 배경 페이지 노출 방지
   useEffect(() => {
-    document.body.style.overflow = page ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (!page) return undefined;
+
+    const root = document.documentElement;
+    const body = document.body;
+    const previousRootOverflow = root.style.overflow;
+    const previousRootOverscroll = root.style.overscrollBehavior;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyOverscroll = body.style.overscrollBehavior;
+
+    root.style.overflow = 'hidden';
+    root.style.overscrollBehavior = 'none';
+    body.style.overflow = 'hidden';
+    body.style.overscrollBehavior = 'none';
+
+    return () => {
+      root.style.overflow = previousRootOverflow;
+      root.style.overscrollBehavior = previousRootOverscroll;
+      body.style.overflow = previousBodyOverflow;
+      body.style.overscrollBehavior = previousBodyOverscroll;
+    };
   }, [page]);
 
   // 스크롤 진입 시 요소 표시 (IntersectionObserver) — 반복 재생
