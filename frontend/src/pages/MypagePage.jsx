@@ -23,6 +23,26 @@ function Modal({ title, onClose, children }) {
   );
 }
 
+function SuccessCheckIcon() {
+  return (
+    <div style={{
+      width: 48, height: 48, margin: '0 auto', borderRadius: '50%',
+      background: 'var(--ok)', display: 'flex',
+      alignItems: 'center', justifyContent: 'center',
+    }}>
+      <svg viewBox="0 0 34 34" fill="none" width={22} height={22} aria-hidden="true">
+        <path
+          d="M7 17.5 13.5 24 27 10"
+          stroke="#fff"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
 function ChangePwModal({ onClose }) {
   const [done, setDone] = useState(false);
   const [current, setCurrent] = useState('');
@@ -82,7 +102,7 @@ function ChangePwModal({ onClose }) {
         </div>
       ) : (
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ fontSize: 40 }}>✅</div>
+          <SuccessCheckIcon />
           <p style={{ margin: 0, fontWeight: 700, fontSize: 16 }}>비밀번호가 변경되었습니다.</p>
           <button className="pg-btn primary" style={{ width: '100%', padding: 13 }} onClick={onClose}>확인</button>
         </div>
@@ -148,7 +168,7 @@ function EditInfoModal({ onClose }) {
         </div>
       ) : (
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ fontSize: 40 }}>✅</div>
+          <SuccessCheckIcon />
           <p style={{ margin: 0, fontWeight: 700, fontSize: 16 }}>정보가 수정되었습니다.</p>
           <button className="pg-btn primary" style={{ width: '100%', padding: 13 }} onClick={onClose}>확인</button>
         </div>
@@ -276,15 +296,7 @@ function ReissueDoneModal({ onClose }) {
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
         textAlign: 'center',
       }}>
-        <div style={{
-          width: 48, height: 48, borderRadius: '50%',
-          background: 'var(--ok)', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-        }}>
-          <svg viewBox="0 0 34 34" fill="none" width={22} height={22}>
-            <path d="M7 17.5 13.5 24 27 10" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+        <SuccessCheckIcon />
         <strong style={{ fontSize: 16 }}>새 API Key가 발급되었습니다.</strong>
         <button className="pg-btn primary" style={{ width: '100%', padding: 11 }} onClick={onClose}>확인</button>
       </div>
@@ -817,15 +829,7 @@ function DeactivateDoneModal({ onClose }) {
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14,
         textAlign: 'center',
       }}>
-        <div style={{
-          width: 48, height: 48, borderRadius: '50%',
-          background: 'var(--ok)', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-        }}>
-          <svg viewBox="0 0 34 34" fill="none" width={22} height={22}>
-            <path d="M7 17.5 13.5 24 27 10" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+        <SuccessCheckIcon />
         <div>
           <strong style={{ display: 'block', fontSize: 16 }}>탈퇴가 완료되었습니다</strong>
         </div>

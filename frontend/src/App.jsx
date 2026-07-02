@@ -202,12 +202,27 @@ export default function App() {
 
       {/* Mypage */}
       <div className={`page-overlay${page === 'mypage' ? ' active' : ''}`}>
-        <div className="po-nav">
-          <HomeButton onClick={closePage} />
-          <span className="po-title">마이페이지</span>
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
-            <span style={{ fontSize: 14, color: 'var(--ink-soft)', display: 'flex', alignItems: 'center' }}>홍길동님</span>
-            <button className="pg-btn" style={{ fontSize: 13, padding: '7px 14px' }} onClick={handleLogout}>로그아웃</button>
+        <div className="po-nav mypage-po-nav">
+          <button type="button" className="po-brand-link" onClick={closePage} aria-label="메인 페이지로 이동">
+            <BrandLogo />
+          </button>
+          <div className="nav-auth" style={{ marginLeft: 'auto' }}>
+            <a
+              className="btn btn-ghost"
+              href="#"
+              onClick={(event) => event.preventDefault()}
+              style={{ textDecoration: 'underline', color: 'var(--ink-soft)' }}
+            >
+              홍길동님
+            </a>
+            <a
+              className="btn btn-outline"
+              href="#"
+              onClick={(event) => { event.preventDefault(); handleLogout(); }}
+              style={{ padding: '7px 13px', fontSize: 13.5 }}
+            >
+              로그아웃
+            </a>
           </div>
         </div>
         <div className="po-body">
