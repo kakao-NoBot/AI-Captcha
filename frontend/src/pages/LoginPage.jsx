@@ -16,7 +16,7 @@ function Modal({ title, onClose, children }) {
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h2 style={{ margin: 0, fontFamily: 'var(--disp)', fontSize: 20, fontWeight: 700, letterSpacing: '-.02em' }}>{title}</h2>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: 'var(--muted)', lineHeight: 1 }}>✕</button>
+          <button type="button" onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: 'var(--muted)', lineHeight: 1 }}>✕</button>
         </div>
         {children}
       </div>
@@ -52,6 +52,7 @@ function FindIdModal({ onClose }) {
             style={attempted && !email.trim() ? errorStyle : {}}
           />
           <button
+            type="button"
             className="pg-btn primary"
             style={{ width: '100%', padding: 13, opacity: email.trim() ? 1 : 0.5, cursor: email.trim() ? 'pointer' : 'not-allowed' }}
             onClick={handleFind}
@@ -68,7 +69,7 @@ function FindIdModal({ onClose }) {
           <div style={{ background: 'var(--peach)', borderRadius: 10, padding: '12px 16px', fontSize: 14, color: 'var(--ink-soft)' }}>
             확인된 아이디: <strong style={{ color: 'var(--ink)' }}>user***</strong>
           </div>
-          <button className="pg-btn primary" style={{ width: '100%', padding: 13 }} onClick={onClose}>로그인 화면으로</button>
+          <button type="button" className="pg-btn primary" style={{ width: '100%', padding: 13 }} onClick={onClose}>로그인 화면으로</button>
         </div>
       )}
     </Modal>
@@ -134,6 +135,7 @@ function FindPwModal({ onClose }) {
             style={attempted1 && !email.trim() ? errorStyle : {}}
           />
           <button
+            type="button"
             className="pg-btn primary"
             style={{ width: '100%', padding: 13, opacity: isStep1Valid ? 1 : 0.5, cursor: isStep1Valid ? 'pointer' : 'not-allowed' }}
             onClick={handleSend}
@@ -151,9 +153,10 @@ function FindPwModal({ onClose }) {
               onChange={e => setCode(e.target.value)}
               style={{ flex: 1, ...(attempted2 && !code.trim() ? errorStyle : {}) }}
             />
-            <button className="pg-btn" style={{ whiteSpace: 'nowrap', padding: '0 14px', fontSize: 13 }} onClick={() => setStep(2)}>재발송</button>
+            <button type="button" className="pg-btn" style={{ whiteSpace: 'nowrap', padding: '0 14px', fontSize: 13 }} onClick={() => setStep(2)}>재발송</button>
           </div>
           <button
+            type="button"
             className="pg-btn primary"
             style={{ width: '100%', padding: 13, opacity: code.trim() ? 1 : 0.5, cursor: code.trim() ? 'pointer' : 'not-allowed' }}
             onClick={handleVerify}
@@ -180,6 +183,7 @@ function FindPwModal({ onClose }) {
             style={attempted3 && !newPwConfirm.trim() ? errorStyle : {}}
           />
           <button
+            type="button"
             className="pg-btn primary"
             style={{ width: '100%', padding: 13, opacity: isStep3Valid ? 1 : 0.5, cursor: isStep3Valid ? 'pointer' : 'not-allowed' }}
             onClick={handleChangePw}
@@ -193,7 +197,7 @@ function FindPwModal({ onClose }) {
             <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 16 }}>비밀번호가 변경되었습니다.</p>
             <p style={{ margin: 0, fontSize: 13, color: 'var(--muted)' }}>새 비밀번호로 로그인하세요.</p>
           </div>
-          <button className="pg-btn primary" style={{ width: '100%', padding: 13 }} onClick={onClose}>로그인 화면으로</button>
+          <button type="button" className="pg-btn primary" style={{ width: '100%', padding: 13 }} onClick={onClose}>로그인 화면으로</button>
         </div>
       )}
     </Modal>
@@ -219,6 +223,11 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
     onLogin();
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleLogin();
+  };
+
   return (
     <>
       <div className="po-body" style={{ maxWidth: 480 }}>
@@ -226,7 +235,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
         <h1 className="pg-h1">로그인</h1>
         <p className="pg-sub">계정에 로그인하세요.</p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <input
             className="pg-input"
             placeholder="아이디"
@@ -244,6 +253,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
           />
 
           <button
+            type="submit"
             className="pg-btn primary"
             style={{
               width: '100%',
@@ -252,7 +262,6 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
               opacity: isValid ? 1 : 0.5,
               cursor: isValid ? 'pointer' : 'not-allowed'
             }}
-            onClick={handleLogin}
           >
             로그인
           </button>
@@ -266,6 +275,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
             }}
           >
             <button
+              type="button"
               onClick={() => setModal('findId')}
               style={{
                 background: 'none',
@@ -280,6 +290,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
             </button>
 
             <button
+              type="button"
               onClick={() => setModal('findPw')}
               style={{
                 background: 'none',
@@ -305,6 +316,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
           >
             계정이 없으신가요?
             <button
+              type="button"
               onClick={() => openPage('signup')}
               style={{
                 background: 'none',
@@ -320,7 +332,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
               회원가입
             </button>
           </div>
-        </div>
+        </form>
       </div>
 
       {modal === 'findId' && (
