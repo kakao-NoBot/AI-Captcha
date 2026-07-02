@@ -25,7 +25,7 @@ export default function SignupPage({ openPage }) {
 
   return (
     <div className="po-body" style={{ maxWidth: 480 }}>
-      <div className="pg-eyebrow">SC-05</div>
+
       <h1 className="pg-h1">회원가입</h1>
       <p className="pg-sub">계정을 만들고 API Key를 발급받으세요.</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

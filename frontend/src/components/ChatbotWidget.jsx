@@ -132,7 +132,7 @@ function UserBubble({ text }) {
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { type: 'bot', text: '안녕하세요! AICAPTCHA 챗봇입니다 👋\n궁금한 내용을 선택하거나 직접 질문해 주세요.' },
+    { type: 'bot', text: '안녕하세요! VLUR CAPTCHA 챗봇입니다 👋\n궁금한 내용을 선택하거나 직접 질문해 주세요.' },
   ]);
   const [follows, setFollows] = useState(QUICK_STARTS);
   const [input, setInput] = useState('');
@@ -218,7 +218,7 @@ export default function ChatbotWidget() {
               </svg>
             </div>
             <div>
-              <div style={{ color: '#fff', fontFamily: 'var(--disp)', fontWeight: 700, fontSize: 14 }}>AICAPTCHA 챗봇</div>
+              <div style={{ color: '#fff', fontFamily: 'var(--disp)', fontWeight: 700, fontSize: 14 }}>VLUR CAPTCHA 챗봇</div>
               <div style={{ color: 'rgba(255,255,255,.8)', fontSize: 11 }}>자주 묻는 질문 안내</div>
             </div>
           </div>

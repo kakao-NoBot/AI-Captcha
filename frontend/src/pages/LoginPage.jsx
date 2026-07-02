@@ -222,7 +222,7 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
   return (
     <>
       <div className="po-body" style={{ maxWidth: 480 }}>
-        <div className="pg-eyebrow">SC-06</div>
+
         <h1 className="pg-h1">로그인</h1>
         <p className="pg-sub">계정에 로그인하세요.</p>
 

@@ -162,7 +162,7 @@ function InfoTab() {
   const [modal, setModal] = useState(null); // null | 'pw' | 'edit'
   return (
     <>
-      <div className="pg-label">SC-07 · 사용자 정보</div>
+      <div className="pg-label">사용자 정보</div>
       <h2 className="pg-h2" style={{ marginBottom: 20 }}>내 정보</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 420 }}>
         <div>
@@ -288,7 +288,7 @@ function ApiKeyTab({ openPage }) {
 
   return (
     <>
-      <div className="pg-label">SC-08 · API Key 관리</div>
+      <div className="pg-label">API Key 관리</div>
       <h2 className="pg-h2" style={{ marginBottom: 20 }}>API Key 관리</h2>
       <div className="pg-card" style={{ maxWidth: 560 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
@@ -541,7 +541,7 @@ function UsageTab() {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12, marginBottom: 20 }}>
         <div>
-          <div className="pg-label">SC-09 · 사용량 조회</div>
+          <div className="pg-label">사용량 조회</div>
           <h2 className="pg-h2">사용량 조회</h2>
         </div>
         <div className="usage-actions">
@@ -832,7 +832,7 @@ function DeactivateTab({ closePage }) {
 
   return (
     <>
-      <div className="pg-label">SC-17 · 계정 탈퇴</div>
+      <div className="pg-label">계정 탈퇴</div>
       <h2 className="pg-h2" style={{ marginBottom: 20 }}>계정 탈퇴</h2>
       <div className="warn-box" style={{ maxWidth: 520, marginBottom: 20 }}>
         <strong>⚠ 탈퇴 시 안내</strong>

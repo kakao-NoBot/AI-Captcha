@@ -25,12 +25,10 @@ export default function Hero({ openPage }) {
               textAlign: "center",
             }}
           >
-            <span className="eyebrow">Anti-Bot CAPTCHA · 티켓팅 보안</span>
-            <h1>사람은 <span className="hl">통과</span>하고,<br/>봇은 막는 AI 캡차</h1>
+            <span className="eyebrow">Secure Access, Verified Humans</span>
+            <h1>지능형 사용자 <span className="hl">검증</span>으로,<br/>봇을 <span className="hl">차단</span>하는 보안 솔루션</h1>
             <p className="lead">
-              ImageNet 기반 아스키 타일을 조건에 맞게 드래그하면 끝.
-              사람은 1~2초면 통과하지만, 매크로·스캘퍼 봇은 멈춰 섭니다.
-              정답 위치와 드래그 궤적까지 함께 검증합니다.
+              ASCII 아트 기반 이미지 선택과 드래그 궤적 분석을 통해 자동화 공격으로부터 서비스를 보호하세요.
             </p>
             <div className="hero-cta" style={{ justifyContent: 'center', position: 'relative', zIndex: 10 }}>
               <button className="btn btn-primary btn-lg" onClick={() => setDemoOpen(true)}>지금 체험하기</button>

@@ -82,7 +82,7 @@ export default function PaymentPage({ closePage }) {
 
   return (
     <div className="po-body">
-      <div className="pg-eyebrow">SC-10c · 카카오페이 단건결제 + 토스페이먼츠 결제위젯 v2</div>
+
       <h1 className="pg-h1">결제 수단을 선택해 예매를 완료하세요</h1>
       <p className="pg-sub">CAPTCHA 통과 토큰 검증 후 결제 요청 단계입니다.</p>
 

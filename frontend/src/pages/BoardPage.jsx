@@ -15,7 +15,7 @@ const NOTICES = [
   { id: 4,  badge: null,   title: 'Vue.js 플러그인 정식 배포', date: '2026-05-28' },
   { id: 3,  badge: null,   title: 'Pro 요금제 API 한도 상향 조정 완료', date: '2026-05-15' },
   { id: 2,  badge: null,   title: 'FastAPI · Django 백엔드 SDK 공개', date: '2026-05-08' },
-  { id: 1,  badge: null,   title: 'AICAPTCHA 서비스 공개 오픈', date: '2026-05-01' },
+  { id: 1,  badge: null,   title: 'VLUR CAPTCHA 서비스 공개 오픈', date: '2026-05-01' },
 ];
 
 const FAQS = [
@@ -68,7 +68,7 @@ function BoardDetail({ post, previousPost, nextPost, onBack, onSelectPost, onEdi
             <i aria-hidden="true" />
             <span>조회 {120 + post.id * 17}</span>
             <i aria-hidden="true" />
-            <span>작성자 <b>AICAPTCHA 운영팀</b></span>
+            <span>작성자 <b>VLUR CAPTCHA 운영팀</b></span>
           </div>
         </div>
         <div className="board-detail-actions">

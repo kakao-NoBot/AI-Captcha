@@ -11,7 +11,7 @@ export default function Footer() {
               <a className="brand" href="#top">
                 <img src={vlurGif} alt="VLUR" style={{ height: 48, width: 'auto' }} />
               </a>
-              <p>티켓팅 매크로·스캘퍼를 막는 AI 캡차 SaaS. ImageNet 기반 아스키 타일 드래그-투-타깃.</p>
+              <p>© VLUR ALL RIGHTS RESERVED</p>
             </div>
             <div className="foot-links">
               <a href="#">이용약관</a>

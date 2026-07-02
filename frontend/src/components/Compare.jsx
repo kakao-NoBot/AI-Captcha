@@ -5,9 +5,9 @@ export default function Compare() {
     <section className="band tint" id="compare">
       <div className="wrap">
         <div className="sec-head" data-reveal>
-          <span className="eyebrow">Why AICAPTCHA</span>
-          <h2>기존 캡차와 무엇이 다른가</h2>
-          <p>왜곡 텍스트나 단순 이미지 선택은 봇에게 이미 뚫렸습니다. 우리는 인식·배치·행동을 한 번에 검증합니다.</p>
+          <span className="eyebrow">Why VLUR CAPTCHA</span>
+          <h2>기존 CAPTCHA의 한계를 넘어서</h2>
+          <p>단순 이미지 선택 방식은 자동화 공격에 이미 취약합니다. VLUR CAPTCHA는 이미지 인식과 드래그 궤적 분석을 결합해 높은 정확도로 봇을 차단합니다.</p>
         </div>
         <div className="compare">
           <div className="cmp old" data-reveal style={{ transitionDelay: '100ms' }}>
@@ -21,7 +21,7 @@ export default function Compare() {
             </ul>
           </div>
           <div className="cmp new" data-reveal style={{ transitionDelay: '220ms' }}>
-            <h3>AICAPTCHA <span className="pill">Ours</span></h3>
+            <h3>VLUR CAPTCHA <span className="pill">Ours</span></h3>
             <div className="sub">아스키 타일 드래그-투-타깃</div>
             <ul>
               <li><span className="ico">✓</span> 사람은 쉽고 VLM은 약한 아스키 지각 활용</li>

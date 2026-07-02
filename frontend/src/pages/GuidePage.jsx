@@ -68,7 +68,7 @@ export default function GuidePage({ openPage }) {
       <div className="wrap">
         <div className="sec-head" data-reveal>
           <span className="eyebrow">Guide · API 사용법</span>
-          <h2>AICAPTCHA 연동 가이드</h2>
+          <h2>VLUR CAPTCHA 연동 가이드</h2>
           <p>3단계로 봇 차단을 시작하세요. API Key 발급부터 토큰 검증까지 모두 안내합니다.</p>
         </div>
 
