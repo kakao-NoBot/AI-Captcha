@@ -233,7 +233,6 @@ export default function LoginPage({ openPage, closePage, onLogin }) {
       <div className="po-body" style={{ maxWidth: 480 }}>
 
         <h1 className="pg-h1">로그인</h1>
-        <p className="pg-sub">계정에 로그인하세요.</p>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <input
